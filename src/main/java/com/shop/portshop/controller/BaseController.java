@@ -1,0 +1,27 @@
+package com.shop.portshop.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class BaseController {
+
+    @GetMapping("/")
+    public String moveMain(){
+        return "/aranoz/index";
+    }
+
+    @GetMapping("/index")
+    public String moveMain2(){
+        return "/aranoz/index";
+    }
+
+    @GetMapping("/feature")
+    public String moveFeature(){
+        return "/aranoz/feature";
+    }
+
+
+
+
+}
