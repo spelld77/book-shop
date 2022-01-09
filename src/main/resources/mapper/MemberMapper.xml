@@ -22,6 +22,9 @@
         SELECT * FROM member WHERE id = #{inputId}
     </select>
 
+    <select id="getPassword" parameterType="String" resultType="String">
+        SELECT pw FROM member WHERE id = #{id}
+    </select>
 
 
 </mapper>

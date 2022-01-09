@@ -8,12 +8,12 @@ public class BaseController {
 
     @GetMapping("/")
     public String moveMain(){
-        return "/aranoz/index";
+        return "/member_templates/index";
     }
 
     @GetMapping("/index")
     public String moveMain2(){
-        return "/aranoz/index";
+        return "/member_templates/index";
     }
 
     @GetMapping("/feature")

@@ -32,4 +32,13 @@ public class MemberService {
         }
         return false;
     }
+
+    public boolean login(String id, String pw) {
+        String realPass = memberMapper.getPassword(id);
+
+        if(pw.equals(realPass)){
+            return true;
+        }
+        return false;
+    }
 }
