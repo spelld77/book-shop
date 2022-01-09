@@ -110,24 +110,6 @@
 </header>
 <!-- Header part end-->
 
-
-<!-- breadcrumb start-->
-<section class="breadcrumb breadcrumb_bg">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <div class="breadcrumb_iner">
-          <div class="breadcrumb_iner_item">
-            <h2>Tracking Order</h2>
-            <p>Home <span>-</span> Tracking Order</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- breadcrumb start-->
-
 <!--================login_part Area =================-->
 <section class="login_part padding_top">
   <div class="container">
@@ -138,10 +120,38 @@
           <div class="login_part_form_iner">
             <h3>Port Shop 회원가입</h3>
             <form class="row contact_form" action="/join" method="post" novalidate="novalidate">
+              <!-- 아이디 입력 & 중복체크 start -->
               <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="mId" name="id" value=""
-                       placeholder="아이디">
+<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#idcheckModal" data-whatever="@mdo">ID 중복체크</button>-->
+              <!-- 중복체크 모달 -->
+              <div class="modal fade" id="idcheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">ID 중복체크</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                          <label for="input_id" class="col-form-label">아이디:</label>
+                          <input type="text" class="form-control" id="input_id">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                      <input type="button" class="btn btn-outline-primary" onclick="duplicateCheck()" value="ID 중복체크" />
+                    </div>
+                  </div>
+                </div>
               </div>
+
+<!--              <div class="col-md-12 form-group p_star">-->
+                <input type="text" class="form-control" id="mId" name="id" value="" readonly placeholder="아이디">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#idcheckModal" data-whatever="@mdo">ID 중복체크</button>
+              </div>
+              <!-- 아이디 입력 & 중복체크 end-->
               <div class="col-md-12 form-group p_star">
                 <input type="password" class="form-control" id="mPw" name="pw" value=""
                        placeholder="암호">
@@ -166,8 +176,6 @@
                 <button type="submit" value="submit" class="btn_3">
                   회원 가입
                 </button>
-<!--                <a class="lost_pass" href="#">forget password?</a>-->
-<!--              </div>-->
             </form>
           </div>
         </div>
@@ -302,6 +310,8 @@
 <script src="js/price_rangs.js"></script>
 <!-- custom js -->
 <script src="js/custom.js"></script>
+<!-- 중복처리 js -->
+<script src="js/my_js/member_join.js"></script>
 </body>
 
 </html>

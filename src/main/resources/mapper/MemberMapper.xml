@@ -18,8 +18,10 @@
         )
     </insert>
 
-    <select id="test" resultType="java.lang.String">
-        SELECT name FROM member
+    <select id="getMember" parameterType="String" resultType="MemberVO">
+        SELECT * FROM member WHERE id = #{inputId}
     </select>
+
+
 
 </mapper>

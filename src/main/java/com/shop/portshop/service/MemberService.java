@@ -18,4 +18,18 @@ public class MemberService {
     public boolean addMember(MemberVO member){
         return memberMapper.addMemberToDB(member);
     }
+
+    // id가 중복인지 체크
+    public boolean checkUniqueId(String inputId) {
+        // 입력이 공백일때 처리
+        if(inputId.strip() == ""){
+            return false;
+        }
+        MemberVO member = memberMapper.getMember(inputId);
+
+        if(member == null){
+            return true;
+        }
+        return false;
+    }
 }

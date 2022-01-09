@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 @Repository("MemberMapper")
 public interface MemberMapper {
     public boolean addMemberToDB(MemberVO member);
+
+    MemberVO getMember(String inputId);
 }

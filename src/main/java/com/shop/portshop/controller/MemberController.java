@@ -4,9 +4,7 @@ import com.shop.portshop.service.MemberService;
 import com.shop.portshop.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MemberController {
@@ -33,5 +31,15 @@ public class MemberController {
         boolean result = memberService.addMember(member);
 
         return "/aranoz/login";
+    }
+
+    @ResponseBody
+    @GetMapping("/checkUniqueId")
+    public String checkUniqueId(@RequestParam("inputId") String inputId){
+        boolean result = memberService.checkUniqueId(inputId);
+        if(result){
+            return "unique";
+        }
+        return "duplicated";
     }
 }
