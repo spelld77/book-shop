@@ -84,6 +84,15 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="contact">Contact</a>
                                 </li>
+                                <!-- 로그인, 로그아웃 버튼 -->
+                                <li class="nav-item" th:if="${session.user == null}">
+                                    <a class="nav-link" href="/login">로그인</a>
+                                </li>
+                                <li class="nav-item" th:if="${session.user != null}">
+                                    <form action="/logout" method="post" id="logout_form">
+                                        <a class="nav-link" href="#" onclick="document.getElementById('logout_form').submit()">로그아웃</a>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex">
@@ -149,7 +158,7 @@
                                 Please Sign in now</h3>
                             <form class="row contact_form" action="/login" method="post" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="id" name="id" value=""
+                                    <input type="text" class="form-control" id="id" name="id" value="" th:value="${id}"
                                         placeholder="아이디">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
@@ -158,8 +167,8 @@
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
-                                        <input type="checkbox" id="f-option" name="selector">
-                                        <label for="f-option">Remember me</label>
+                                        <input type="checkbox" id="f-option" name="remember_id" th:checked="${remember_id}">
+                                        <label for="f-option">ID 저장</label>
                                     </div>
                                     <button type="submit" value="submit" class="btn_3">
                                         log in

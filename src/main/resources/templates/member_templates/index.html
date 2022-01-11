@@ -84,14 +84,13 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="contact">Contact</a>
                                 </li>
-                                <!-- 로그인 버튼 -->
+                                <!-- 로그인, 로그아웃 버튼 -->
                                 <li class="nav-item" th:if="${session.user == null}">
-                                    <a class="nav-link" href="login">로그인</a>
+                                    <a class="nav-link" href="/login">로그인</a>
                                 </li>
                                 <li class="nav-item" th:if="${session.user != null}">
                                     <form action="/logout" method="post" id="logout_form">
                                         <a class="nav-link" href="#" onclick="document.getElementById('logout_form').submit()">로그아웃</a>
-<!--                                        <input type="submit" class="" value="로그아웃">-->
                                     </form>
                                 </li>
 
