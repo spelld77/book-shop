@@ -41,4 +41,12 @@ public class MemberService {
         }
         return false;
     }
+
+    public MemberVO getMember(String userId) {
+        return memberMapper.getMember(userId);
+    }
+
+    public boolean modifyMember(MemberVO member) {
+        return memberMapper.modifyMember(member);
+    }
 }

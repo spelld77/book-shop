@@ -2,6 +2,7 @@ package com.shop.portshop.controller;
 
 import com.shop.portshop.service.MemberService;
 import com.shop.portshop.vo.MemberVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+@Slf4j
 @Controller
 public class MemberController {
 
@@ -24,7 +25,7 @@ public class MemberController {
     @GetMapping("/login")
     public String moveLoginPage(
             @CookieValue(value="rememberIdCookie", required = false) Cookie rememberIdCookie, Model model){
-        // 쿠키
+        // 쿠키(id, 체크박스)
         if(rememberIdCookie != null){
             model.addAttribute("id", rememberIdCookie.getValue());
             model.addAttribute("remember_id", true);
@@ -40,7 +41,7 @@ public class MemberController {
         boolean loginSuccess = memberService.login(id,pw);
 
         if(!loginSuccess){
-            return "/member_templates/login";
+            return "redirect:/login";
         }
         // 로그인 세션, 쿠키 설정
         session.setAttribute("user", id);
@@ -63,7 +64,7 @@ public class MemberController {
 
     @GetMapping("/join")
     public String moveJoinPage(){
-        return "/member_templates/join_register";
+        return "member_register";
     }
 
     @PostMapping("/join")
@@ -72,9 +73,20 @@ public class MemberController {
 
         return "/member_templates/login";
     }
+
     @GetMapping("/member/modify")
-    public String modifyMember(){
-        return "/member_templates/join_modify";
+    public String modifyMemberPage( Model model, HttpSession session){
+        String userId = (String) session.getAttribute("user");
+        MemberVO member = memberService.getMember(userId);
+        log.debug(member.toString());
+        model.addAttribute("member", member);
+        return "/member_templates/member_modify";
+    }
+
+    @PostMapping("/member/modify")
+    public String modifyMember( @ModelAttribute("member") MemberVO member){
+        boolean result = memberService.modifyMember(member);
+        return "redirect:/";
     }
 
     @ResponseBody

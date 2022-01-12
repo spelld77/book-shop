@@ -18,6 +18,18 @@
         )
     </insert>
 
+    <update id="modifyMember" parameterType="MemberVO">
+        UPDATE member
+        SET
+            pw = #{pw},
+            name = #{name},
+            email = #{email},
+            tel = #{tel},
+            address = #{address}
+        WHERE
+            id = #{id}
+    </update>
+
     <select id="getMember" parameterType="String" resultType="MemberVO">
         SELECT * FROM member WHERE id = #{inputId}
     </select>

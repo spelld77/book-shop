@@ -10,4 +10,6 @@ public interface MemberMapper {
     public MemberVO getMember(String inputId);
 
     public String getPassword(String id);
+
+    public boolean modifyMember(MemberVO member);
 }

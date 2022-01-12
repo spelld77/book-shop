@@ -123,35 +123,41 @@
         <div class="login_part_form">
           <div class="login_part_form_iner">
             <h3>Port Shop 회원정보 수정</h3>
-            <form class="row contact_form" action="/join" method="post" novalidate="novalidate">
-              <!-- 아이디 입력 & 중복체크 start -->
+            <form class="row contact_form" action="/member/modify" method="post" th:object="${member}" novalidate="novalidate">
+
               <div class="col-md-12 form-group p_star">
-                아이디: <input type="text" class="form-control" id="mId" name="id" value="" readonly placeholder="아이디">
+                <div>아이디</div>
+                <input type="text" class="form-control" id="mId" name="id" th:field="*{id}" readonly placeholder="아이디">
               </div>
-              <!-- 아이디 입력 & 중복체크 end-->
+
               <div class="col-md-12 form-group p_star">
-                <input type="password" class="form-control" id="mPw" name="pw" value=""
+                <div>비밀번호</div>
+                <input type="password" class="form-control" id="mPw" name="pw" th:field="*{pw}"
                        placeholder="암호">
               </div>
-              <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="mName" name="name" value=""
+                <div class="col-md-12 form-group p_star">
+                  <div>이름</div>
+                  <input type="text" class="form-control" id="mName" name="name" th:field="*{name}"
                        placeholder="이름">
               </div>
               <div class="col-md-12 form-group p_star">
-                <input type="email" class="form-control" id="mEmail" name="email" value=""
+                <div>이메일</div>
+                <input type="email" class="form-control" id="mEmail" name="email" th:field="*{email}"
                        placeholder="이메일">
               </div>
               <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="mTel" name="tel" value=""
+                <div>전화번호</div>
+                <input type="text" class="form-control" id="mTel" name="tel" th:field="*{tel}"
                        placeholder="전화">
               </div>
               <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="mAddress" name="address" value=""
+                <div>주소</div>
+                <input type="text" class="form-control" id="mAddress" name="address" th:field="*{address}"
                        placeholder="주소">
               </div>
 
                 <button type="submit" value="submit" class="btn_3">
-                  회원 가입
+                  회원 정보 수정
                 </button>
             </form>
           </div>
