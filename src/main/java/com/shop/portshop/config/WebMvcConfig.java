@@ -1,5 +1,6 @@
 package com.shop.portshop.config;
 
+import com.shop.portshop.interceptor.AdminInterceptor;
 import com.shop.portshop.interceptor.LoggerInterceptor;
 import com.shop.portshop.interceptor.LoginInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
@@ -18,6 +19,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //로그인 정보 인터셉터
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/member/**");
-//                .excludePathPatterns("/img/**", "/css/**", "/js/**", "/webfonts/**", "/fonts/**");
+
+        //관리자 정보 인터셉터
+        registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/admin/**")
+                .excludePathPatterns("/admin/login");
     }
 }

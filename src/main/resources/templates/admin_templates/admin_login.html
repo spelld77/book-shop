@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin페이지</title>
+</head>
+<body>
+<form action="/admin/login" method="post">
+<table>
+  <tbody>
+    <tr>
+      <td>ID: </td>
+      <td><input type="text" id="id" name="id"></td>
+    </tr>
+  <tr>
+    <td>Password: </td>
+    <td><input type="password" id="pw" name="pw"></td>
+  </tr>
+  <tr>
+    <td>
+      <input type="submit" value="로그인">
+    </td>
+  </tr>
+  </tbody>
+ </table>
+</form>
+</body>
+</html>
