@@ -23,8 +23,16 @@ public class AdminController {
         this.adminService = adminService;
     }
 
+    @GetMapping("/main")
+    public String mainPage(){
+        return "/admin_templates/admin_main";
+    }
+
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage(HttpSession session){
+        if(session.getAttribute("admin") != null){
+            return "redirect:/admin/main";
+        }
         return "/admin_templates/admin_login";
     }
 
@@ -38,7 +46,7 @@ public class AdminController {
         }
         log.info("login success");
         session.setAttribute("admin", id);
-        return "/admin_templates/admin_main";
+        return "redirect:/admin/main";
     }
 
     @GetMapping("/logout")
@@ -51,5 +59,11 @@ public class AdminController {
 
         session.removeAttribute("admin");
         return "redirect:/";
+    }
+
+    @GetMapping("/productRegister")
+    public String productRegister(){
+
+        return "/admin_templates/admin_product_register";
     }
 }

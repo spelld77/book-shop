@@ -64,7 +64,7 @@ public class MemberController {
 
     @GetMapping("/join")
     public String moveJoinPage(){
-        return "member_register";
+        return "/member_templates/member_register";
     }
 
     @PostMapping("/join")
