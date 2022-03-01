@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.portshop.mapper.BoardMapper">
+    <select id="selectBoards" resultType="com.shop.portshop.vo.BoardVO">
+        SELECT
+            no,
+            title,
+            writer,
+            reg_date AS regDate,
+            views
+        FROM
+            user_board
+        ORDER BY
+            no desc
+        LIMIT
+            #{startRecord}, #{recordPerPage}
+
+
+
+    </select>
+
+    <insert id="insertOneBoard">
+        INSERT INTO
+            user_board(`title`, `content`, `writer`)
+        VALUES (
+                #{title},
+                #{content},
+                'Temp Writer');
+
+    </insert>
+
+    <select id="countAllBoard" resultType="Integer">
+        SELECT COUNT(*) FROM user_board;
+    </select>
+
+</mapper>

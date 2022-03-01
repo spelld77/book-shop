@@ -1,0 +1,85 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/my_css/board.css" rel="stylesheet">
+  <th:block th:include="/commons/fragments :: commons_head"></th:block>
+    <title>게시판</title>
+</head>
+<body>
+  <th:block th:replace="/commons/fragments :: commons_nav" />
+
+<!--  </section>-->
+<!--content table end -->
+  <!--pagination wrapper start -->
+  <div id="content_div" class="container" >
+    <table class="table table-responsive-sm">
+      <thead>
+      <tr>
+        <th scope="col" class="text-center">#</th>
+        <th scope="col">제목</th>
+        <th scope="col">작성자</th>
+        <th scope="col">작성일</th>
+        <th scope="col" class="text-center">조회수</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="board : ${boardList}">
+        <td th:text="${board.no}" class="text-center"></td>
+        <td th:text="${board.title}"></td>
+        <td th:text="${board.writer}"></td>
+        <td th:text="${#temporals.format(board.regDate, 'yyy-MM-dd')}"></td>
+        <td th:text="${board.views}" class="text-center"></td>
+      </tr>
+
+<!--      <tr>-->
+<!--        <td class="text-center">1</td>-->
+<!--        <td>Mark</td>-->
+<!--        <td>Otto</td>-->
+<!--        <td>2021-12-10</td>-->
+<!--        <td class="text-center">5</td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td class="text-center">2</td>-->
+<!--        <td>Jacob</td>-->
+<!--        <td>Thornton</td>-->
+<!--        <td>@fat</td>-->
+<!--        <td class="text-center">1</td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td class="text-center">3</td>-->
+<!--        <td>Larry</td>-->
+<!--        <td>the Bird</td>-->
+<!--        <td>@twitter</td>-->
+<!--        <td class="text-center">12310</td>-->
+<!--      </tr>-->
+      </tbody>
+    </table>
+    <!--글작성 버튼-->
+    <div class="add_board_div float-right"> <!-- 임시-->
+<!--    <div th:if="${session.user}" class="add_board_div float-right">-->
+      <a href="board/write" class="genric-btn primary">글작성</a>
+    </div>
+    <!--pagination wrapper end -->
+
+<!--  </div>-->
+    <nav aria-label="Page" class="pagination-wrapper">
+      <ul class="pagination">
+        <li th:if="${pageInfo.prevPage}" class="page-item"><a class="page-link" th:href="@{/board(page=${pageInfo.nowPage - 1})}">Prev</a></li>
+
+        <li th:each="num : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}" class="page-item" th:classappend="${pageInfo.nowPage==num} ? active">
+          <a class="page-link" th:href="@{/board(page=${numStat.current})}" th:text="${numStat.current}"></a>
+        </li>
+
+        <li th:if="${pageInfo.nextPage}" class="page-item"><a class="page-link" th:href="@{/board(page=${pageInfo.nowPage + 1})}">Next</a></li>
+      </ul>
+    </nav>
+  </div>
+
+
+
+  <footer th:replace="/commons/fragments :: commons_footer"></footer>
+  <th:block th:include="/commons/fragments :: commons_jquery_pluginis"></th:block>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/my_css/write.css" rel="stylesheet">
+    <th:block th:include="/commons/fragments :: commons_head"></th:block>
+    <title>글작성</title>
+</head>
+<body>
+  <th:block th:replace="/commons/fragments :: commons_nav" />
+
+  <div class="container content-div">
+    <form action="write" method="post">
+      <div class="form-row form-title">
+        <span>제목</span>
+        <div>
+          <input name="title" type="text" size="50" maxlength="50" minlength="1">
+        </div>
+      </div>
+      <div class="form-row form-content">
+        <span>내용</span>
+        <div>
+          <textarea name="content" cols="100" rows="5" minlength="1"></textarea>
+          <div class="d-flex justify-content-end">
+            <a href="/board" class="genric-btn danger">취소</a>
+            <button type="submit" class="genric-btn success">글작성</button>
+<!--            <a href="" class="genric-btn success">글작성</a>-->
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+
+
+
+
+
+
+  <footer th:replace="/commons/fragments :: commons_footer"></footer>
+  <th:block th:include="/commons/fragments :: commons_jquery_pluginis"></th:block>
+
+</body>
+</html>

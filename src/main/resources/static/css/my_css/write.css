@@ -1,0 +1,23 @@
+.content-div{
+    padding-top: 10%;
+}
+
+.content-div span{
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+
+.form-title{
+    margin-bottom: 20px;
+    margin-left:40px;
+}
+
+.form-content{
+    margin-left:40px;
+}
+
+.genric-btn{
+    font-size: 2rem;
+}
+

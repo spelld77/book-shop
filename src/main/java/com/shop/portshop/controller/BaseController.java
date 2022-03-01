@@ -21,10 +21,11 @@ public class BaseController {
         return "/aranoz/feature";
     }
 
-    @GetMapping("/board")
-    public String moveBoard(){
-        return "/board_templates/board";
-    }
+//    @GetMapping("/board")
+//    public String moveBoard(){
+//        BoardController
+//        return "/board_templates/board";
+//    }
 
 
 
