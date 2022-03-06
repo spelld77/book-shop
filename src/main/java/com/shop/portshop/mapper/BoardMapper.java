@@ -8,8 +8,11 @@ import java.util.List;
 
 @Repository("BoardMapper")
 public interface BoardMapper {
-    public List<BoardVO> selectBoards(@Param("startRecord") long startRecord, @Param("recordPerPage") int recordPerPage);
+    List<BoardVO> selectBoards(@Param("startRecord") long startRecord, @Param("recordPerPage") int recordPerPage);
 
-    public boolean insertOneBoard(@Param("title") String title, @Param("content") String content);
-    public int countAllBoard();
+    boolean insertOneBoard(@Param("title") String title, @Param("content") String content);
+    int countAllBoard();
+
+    BoardVO selectOneBoard(long boardNo);
+    void increaseViews(long boardNo);
 }

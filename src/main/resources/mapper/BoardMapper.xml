@@ -36,4 +36,25 @@
         SELECT COUNT(*) FROM user_board;
     </select>
 
+    <select id="selectOneBoard" parameterType="Long" resultType="com.shop.portshop.vo.BoardVO">
+        SELECT
+            no,
+            title,
+            content,
+            writer,
+            views,
+            reg_date AS regDate,
+            update_date As updateDate
+        FROM
+             user_board
+        WHERE
+            no = #{boardNo}
+    </select>
+
+    <update id="increaseViews" parameterType="Long">
+        UPDATE user_board
+        SET views = views + 1
+        WHERE no = #{no}
+    </update>
+
 </mapper>

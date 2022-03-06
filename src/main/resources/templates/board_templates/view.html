@@ -1,0 +1,63 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/my_css/view.css" rel="stylesheet">
+    <th:block th:include="/commons/fragments :: commons_head"></th:block>
+    <title>글보기</title>
+</head>
+<body>
+  <th:block th:replace="/commons/fragments :: commons_nav" />
+
+  <div class="container content-div">
+
+    <div class="title-row">
+        <h3 th:text="${board.title}">제목</h3>
+    </div>
+    <div class="info-row d-flex">
+      <div class="board-explain w-25">
+          <span>작성자</span>
+          <span class="" th:text="${board.writer}">작성자</span>
+      </div>
+      <div class="w-75 justify-content-end d-flex">
+          <span class="board-explain">
+              <span>조회수</span>
+              <span th:text="${board.views}">조회수</span>
+          </span>
+          <span class="board-explain">
+              <span>작성일</span>
+            <span th:text="${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</span>
+          </span>
+          <span class="board-explain">
+              <span>수정일</span>
+            <span th:text="${#temporals.format(board.updateDate, 'yyyy-MM-dd HH:mm:ss')}">수정일</span>
+          </span>
+      </div>
+    </div>
+
+<!-- 내용-->
+    <div class="article-info">
+     <p th:text="${board.content}">내용</p>
+    </div>
+
+<!--      댓글-->
+    <div class="reply-info">
+        댓글
+    </div>
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+  <footer th:replace="/commons/fragments :: commons_footer"></footer>
+  <th:block th:include="/commons/fragments :: commons_jquery_pluginis"></th:block>
+
+</body>
+</html>

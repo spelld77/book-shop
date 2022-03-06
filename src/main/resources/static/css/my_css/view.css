@@ -1,0 +1,32 @@
+.content-div{
+    margin-top:130px;
+    padding:10px;
+    min-height: 500px;
+    background: aliceblue;
+
+}
+
+.content-div span{
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+.title-row{
+    /*border:solid blanchedalmond;*/
+    background: gainsboro;
+    font-size:1.6rem;
+}
+.info-row{
+    background: #dae0e5;
+}
+.board-explain{
+    font-size: 1.05rem;
+}
+
+.board-explain span:nth-child(2){
+    color:green;
+}
+
+.reply-info{
+    margin-top: 30%;
+}

@@ -34,4 +34,10 @@ public class BoardService {
     public int getAllBoardCount() {
         return boardMapper.countAllBoard();
     }
+
+    public BoardVO viewOneBoard(long boardNo) {
+        boardMapper.increaseViews(boardNo);
+        BoardVO board = boardMapper.selectOneBoard(boardNo);
+        return board;
+    }
 }

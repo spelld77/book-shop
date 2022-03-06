@@ -1,5 +1,8 @@
 package com.shop.portshop.commons;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 public class Pagination {
 
     private int totalRecords; //모든 게시물의 수
@@ -15,19 +18,18 @@ public class Pagination {
 
     public Pagination(int totalRecords, int inputNowPage, int recordPerPage, int visiblePageSize){
         this.totalRecords = totalRecords;
-        recordSize = recordPerPage;
-        pageSize = visiblePageSize;
-        totalPages = totalRecords / recordSize + 1;
+        this.recordSize = recordPerPage;
+        this.pageSize = visiblePageSize;
+        this.totalPages = totalRecords / recordSize + 1;
         setNowPage(inputNowPage);
 
-        startRecord = (nowPage - 1) * recordSize + 1;
+        this.startRecord = (nowPage - 1) * recordSize + 1;
 
-        startPage = setStartPage();
-        endPage = setEndPage();
-        prevPage = setPrevPage();
-        nextPage = setNextPage();
+        this.startPage = setStartPage();
+        this.endPage = setEndPage();
+        this.prevPage = setPrevPage();
+        this.nextPage = setNextPage();
     }
-
 
     public int setStartPage() {
         int startPage = nowPage -  (pageSize / 2);

@@ -4,12 +4,10 @@ import com.shop.portshop.commons.Pagination;
 import com.shop.portshop.service.BoardService;
 import com.shop.portshop.vo.BoardVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +19,7 @@ public class BoardController {
     private BoardService boardService;
     private Pagination pagination;
 
+    @Autowired
     public BoardController(BoardService boardService){
         this.boardService = boardService;
     }
@@ -33,10 +32,7 @@ public class BoardController {
         int allBoardCount = boardService.getAllBoardCount();
         pagination = new Pagination(allBoardCount, nowPage, 10, 5);
 
-//        List<BoardVO> boardList = boardService.getBoardList();
         List<BoardVO> boardList = boardService.getBoardList(pagination);
-
-
 
         model.addAttribute("boardList",boardList);
         model.addAttribute("pageInfo", pagination);
@@ -58,5 +54,15 @@ public class BoardController {
             log.info("board add failure!");
         }
         return "redirect:/board";
+    }
+
+    @GetMapping("/{boardNo}")
+    public String viewOneBoard(@PathVariable("boardNo") long boardNo, Model model){
+        BoardVO board = boardService.viewOneBoard(boardNo);
+        if(board == null){
+            return "redirect:/board";
+        }
+        model.addAttribute("board", board);
+        return "/board_templates/view";
     }
 }

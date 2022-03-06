@@ -26,7 +26,8 @@
       <tbody>
       <tr th:each="board : ${boardList}">
         <td th:text="${board.no}" class="text-center"></td>
-        <td th:text="${board.title}"></td>
+        <td><a th:text="${board.title}"
+               th:href="@{/board/{boardNo}(boardNo=${board.no}, nowPage=${pageInfo.nowPage}) }"></a> </td>
         <td th:text="${board.writer}"></td>
         <td th:text="${#temporals.format(board.regDate, 'yyy-MM-dd')}"></td>
         <td th:text="${board.views}" class="text-center"></td>
