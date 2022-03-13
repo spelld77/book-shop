@@ -10,7 +10,7 @@
   <th:block th:replace="/commons/fragments :: commons_nav" />
 
   <div class="container content-div">
-    <form action="write" method="post">
+    <form action="write" method="post" enctype="multipart/form-data">
       <div class="form-row form-title">
         <span>제목</span>
         <div>
@@ -21,10 +21,12 @@
         <span>내용</span>
         <div>
           <textarea name="content" cols="100" rows="5" minlength="1"></textarea>
+          <div>
+            <input type="file"  name="files" multiple="multiple" accept="image/png, image/jpeg" />
+          </div>
           <div class="d-flex justify-content-end">
             <a href="/board" class="genric-btn danger">취소</a>
             <button type="submit" class="genric-btn success">글작성</button>
-<!--            <a href="" class="genric-btn success">글작성</a>-->
           </div>
         </div>
       </div>

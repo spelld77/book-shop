@@ -22,18 +22,19 @@
 
     </select>
 
-    <insert id="insertOneBoard">
+
+    <insert id="insertOneBoard" parameterType="BoardVO" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO
             user_board(`title`, `content`, `writer`)
         VALUES (
-                #{title},
-                #{content},
-                'Temp Writer');
+                   #{title},
+                   #{content},
+                   'Temp Writer')
 
     </insert>
 
     <select id="countAllBoard" resultType="Integer">
-        SELECT COUNT(*) FROM user_board;
+        SELECT COUNT(*) FROM user_board
     </select>
 
     <select id="selectOneBoard" parameterType="Long" resultType="com.shop.portshop.vo.BoardVO">

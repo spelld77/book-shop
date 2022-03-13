@@ -38,9 +38,13 @@
 <!-- 내용-->
     <div class="article-info">
      <p th:text="${board.content}">내용</p>
+
+     <div th:each="item : ${files}">
+         <img th:src="${uploadUriPath + item}">
+     </div>
     </div>
 
-<!--      댓글-->
+<!-- 댓글-->
     <div class="reply-info">
         댓글
     </div>

@@ -30,3 +30,9 @@
 .reply-info{
     margin-top: 30%;
 }
+
+img{
+    max-width: 600px;
+    max-height: 400px;
+    margin-top: 20px;
+}

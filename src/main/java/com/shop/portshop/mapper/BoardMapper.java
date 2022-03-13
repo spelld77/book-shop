@@ -10,7 +10,7 @@ import java.util.List;
 public interface BoardMapper {
     List<BoardVO> selectBoards(@Param("startRecord") long startRecord, @Param("recordPerPage") int recordPerPage);
 
-    boolean insertOneBoard(@Param("title") String title, @Param("content") String content);
+    int insertOneBoard(BoardVO boardVO);
     int countAllBoard();
 
     BoardVO selectOneBoard(long boardNo);

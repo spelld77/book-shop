@@ -3,10 +3,12 @@ package com.shop.portshop.vo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.annotation.Generated;
 import java.time.LocalDateTime;
 
 @Getter @Setter
 public class BoardVO {
+
     private long no;
     private String title;
     private String content;
