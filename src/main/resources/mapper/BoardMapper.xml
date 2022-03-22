@@ -58,4 +58,82 @@
         WHERE no = #{no}
     </update>
 
+    <insert id="insertNewRootComment" parameterType="CommentVO">
+
+        <selectKey keyProperty="grp" resultType="long" order="BEFORE">
+            SELECT MAX(no) + 1 FROM comment
+        </selectKey>
+
+        INSERT INTO
+            comment(board, writer, content, grp)
+        VALUES(
+            #{board},
+            #{writer},
+            #{content},
+            #{grp}
+        )
+    </insert>
+
+    <select id="selectComments" parameterType="Long" resultType="CommentVO">
+        SELECT
+               *
+        FROM
+             comment
+        WHERE
+              board = #{boardNo}
+        ORDER BY
+                 grp, lft
+    </select>
+
+
+
+    <select id="selectLastChildRgt" parameterType="CommentVO" resultType="int">
+        SELECT max(rgt)
+        FROM comment
+        WHERE
+        board = #{board} and
+        grp = #{grp} and
+        lft between #{lft} and #{rgt}
+    </select>
+
+    <update id="updateIncreaseCommentLft">
+        update comment
+        set
+            lft = lft + 2
+        where
+            board = #{commentVO.board} and
+            grp = #{commentVO.grp} and
+            lft >= #{lastChildRgt}
+    </update>
+
+    <update id="updateIncreaseCommentRgt">
+        update comment
+        set
+            rgt = rgt + 2
+        where
+            board = #{commentVO.board} and
+            grp = #{commentVO.grp} and
+            rgt >= #{lastChildRgt}
+    </update>
+
+    <insert id="insertNewChildComment">
+        insert into comment(
+                            writer,
+                            content,
+                            board,
+                            grp,
+                            level,
+                            lft,
+                            rgt)
+        values (
+                #{commentVO.writer},
+                #{commentVO.content},
+                #{commentVO.board},
+                #{commentVO.grp},
+                #{commentVO.level} + 1,
+                #{lastChildRgt},
+                #{lastChildRgt} + 1
+                )
+    </insert>
+
 </mapper>

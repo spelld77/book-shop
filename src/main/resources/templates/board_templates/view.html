@@ -44,9 +44,92 @@
      </div>
     </div>
 
-<!-- 댓글-->
+
     <div class="reply-info">
-        댓글
+
+<!-- 댓글 시작 -->
+        <div class="comment-wrapper">
+            <div class="comment-item">
+                <div class="content border border-info">
+                    <div class="info-row d-flex">
+                        <div class=" mr-auto">기원초풍</div>
+                        <div class="right">
+                            <time datetime="2022-03-18T10:53:26.000Z" data-format="Y-m-d H:i:s">2022-03-18 19:53:26</time>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <div class="text"><pre>링크만 주면 구동테스트 함</pre></div>
+<!--                        <div class="btn btn-sm btn-more">펼쳐보기▼</div>-->
+                    </div>
+                </div>
+            </div>
+            <!-- 댓글 제작중 start-->
+            <div class="comment-item mt-3" th:each="comment : ${comments}">
+                <div class="content border border-info" th:style="${comment.level > 1} ? 'margin-left:'+ ${comment.level}*30+'px'">
+                    <div class="info-row d-flex">
+                        <div class=" mr-auto" th:text="${comment.writer}"></div>
+                        <div class="right">
+                            <time th:datetime="${comment.regDate}" data-format="Y-m-d H:i:s" th:text="${#temporals.format(comment.regDate, 'yyyy-MM-dd HH:mm:ss')}"></time>
+                            <span>
+                                <button class="replyCommentBtn btn btn-secondary"> Make reply form</button>
+                                <form action="/board/commentReply" method="post" class="comment-reply">
+                                    <input type="hidden" name="boardNo" th:value="${boardNo}">
+                                    <input type="hidden" name="writer" th:value="tempWriterAA">
+                                    <input type="hidden" name="grp" th:value="${comment.grp}">
+                                    <input type="hidden" name="lft" th:value="${comment.lft}">
+                                    <input type="hidden" name="rgt" th:value="${comment.rgt}">
+                                    <input type="hidden" name="level" th:value="${comment.level}">
+                                    <input type="submit" class="btn btn-outline-primary" value="답글" >
+                                </form>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <span th:if="${comment.level > 1}">
+                                <th:block th:each="num : ${#numbers.sequence(2, comment.level)}">
+                                    =>
+                                </th:block>
+                        </span>
+                        <div class="text" th:text="${comment.content}"><pre></pre></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 댓글 제작중 end-->
+            <!-- 댓글 답글 start -->
+
+            <!-- 댓글 답글 end -->
+        </div>
+
+        <!-- 댓글 끝 -->
+
+
+        <!-- 댓글 작성 -->
+        <form class="write-area" th:action="@{/board/{boardNo}/comment(boardNo=${boardNo})}" id="commentForm" method="post">
+            <div class="subtitle">댓글 작성</div>
+            <div class="form-row">
+                <div class="form-group col-sm-auto">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">@</span>
+                        </div>
+                        <input type="text" name="writer" class="form-control form-control-sm" value="tempWriter" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-wrapper mb-5">
+                <div class="input-block">
+                    <div class="input">
+                        <textarea class="form-control" name="content"
+                                  onkeyup="if (!window.__cfRLUnblockHandlers) return false; resize(this)"
+                                  maxlength="8000" placeholder="내용 입력" required=""></textarea>
+                    </div>
+                </div>
+                <div class="mt-1 d-flex justify-content-end">
+                    <button type="submit" id="commentFormButton" class="btn btn-lg btn-outline-info">작성</button>
+                </div>
+            </div>
+        </form>
     </div>
 
 
@@ -62,6 +145,6 @@
 
   <footer th:replace="/commons/fragments :: commons_footer"></footer>
   <th:block th:include="/commons/fragments :: commons_jquery_pluginis"></th:block>
-
+  <script src="/js/my_js/view.js"></script>
 </body>
 </html>

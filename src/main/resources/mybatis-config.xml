@@ -12,6 +12,7 @@
 
         <typeAlias alias="MemberVO" type="com.shop.portshop.vo.MemberVO"/>
         <typeAlias alias="BoardVO" type="com.shop.portshop.vo.BoardVO" />
+        <typeAlias alias="CommentVO" type="com.shop.portshop.vo.CommentVO" />
 
 
     </typeAliases>

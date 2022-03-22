@@ -3,6 +3,7 @@ package com.shop.portshop.controller;
 import com.shop.portshop.commons.Pagination;
 import com.shop.portshop.service.BoardService;
 import com.shop.portshop.vo.BoardVO;
+import com.shop.portshop.vo.CommentVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,13 +69,41 @@ public class BoardController {
 
         BoardVO board = (BoardVO) obj.get("board");
         List<String> fileNames = (List<String>)obj.get("fileNames");
+        List<CommentVO> comments = (List<CommentVO>)obj.get("comments");
 
         if(board == null){
             return "redirect:/board";
         }
+        model.addAttribute("boardNo", boardNo);
         model.addAttribute("board", board);
+        model.addAttribute("comments", comments);
         model.addAttribute("files", fileNames);
         model.addAttribute("uploadUriPath", uploadUriPath);
         return "/board_templates/view";
     }
+
+    //루트 댓글 작성
+    @PostMapping("/{boardNo}/comment")
+    public String createComment(@PathVariable long boardNo, @RequestParam String writer,
+                             @RequestParam String content){
+        log.info("BoardController: createComment");
+        boolean result = boardService.createRootComment(boardNo, writer, content);
+        return "redirect:/board/"+boardNo;
+
+    }
+
+    // 대댓글 작성
+//    @PostMapping("/{boardNo}/commentReply")
+    @PostMapping("/commentReply")
+    public String creatCommentReply(
+            @RequestParam long boardNo, @RequestParam String writer,
+            @RequestParam long grp,   @RequestParam int lft,
+            @RequestParam int rgt,    @RequestParam int level){
+        log.info("BoardController: createCommentReply");
+        boolean result = boardService.createCommentReply(
+                boardNo,writer, grp, lft, rgt, level);
+
+        return "redirect:/board/"+boardNo;
+    }
+
 }

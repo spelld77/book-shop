@@ -5,12 +5,13 @@ import com.shop.portshop.commons.StorageService;
 import com.shop.portshop.mapper.ArchiveMapper;
 import com.shop.portshop.mapper.BoardMapper;
 import com.shop.portshop.vo.BoardVO;
+import com.shop.portshop.vo.CommentVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,10 +68,53 @@ public class BoardService {
 
         Map<String, Object> resultInfo = new HashMap<>();
         BoardVO board = boardMapper.selectOneBoard(boardNo);
+        List<CommentVO> comments = boardMapper.selectComments(boardNo);
         //파일 이미지
         List<String> locations = archiveMapper.selectBoardFileNames(boardNo);
+
         resultInfo.put("board", board);
         resultInfo.put("fileNames", locations);
+        resultInfo.put("comments", comments);
         return resultInfo;
+    }
+
+    public boolean createRootComment(long boardNo, String writer, String content) {
+
+        CommentVO commentVO = CommentVO.builder()
+                .board(boardNo)
+                .writer(writer)
+                .content(content)
+                .build();
+
+       return boardMapper.insertNewRootComment(commentVO);
+    }
+
+    // 답글 작성
+    @Transactional
+    public boolean createCommentReply(long boardNo, String writer, long grp, int lft, int rgt, int level) {
+
+        log.info("BoardService: createCommentReply");
+        CommentVO commentVO = CommentVO.builder()
+                .board(boardNo)
+                .writer(writer)
+                .grp(grp)
+                .lft(lft)
+                .rgt(rgt)
+                .level(level)
+                .content("답글")
+                .build();
+
+
+        // 부모와 자식노드의 max(rgt)
+        int lastChildRgt = boardMapper.selectLastChildRgt(commentVO);
+//
+//        // 기존 노드의 lft, rgt를 증가
+        boardMapper.updateIncreaseCommentLft(commentVO, lastChildRgt);
+        boardMapper.updateIncreaseCommentRgt(commentVO, lastChildRgt);
+
+        // 새로운 노드 추가
+        boardMapper.insertNewChildComment(commentVO, lastChildRgt);
+
+        return true;
     }
 }
