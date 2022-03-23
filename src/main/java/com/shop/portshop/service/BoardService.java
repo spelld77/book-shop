@@ -91,17 +91,17 @@ public class BoardService {
 
     // 답글 작성
     @Transactional
-    public boolean createCommentReply(long boardNo, String writer, long grp, int lft, int rgt, int level) {
+    public boolean createCommentReply(long boardNo, String writer, String content, long grp, int lft, int rgt, int level) {
 
         log.info("BoardService: createCommentReply");
         CommentVO commentVO = CommentVO.builder()
                 .board(boardNo)
                 .writer(writer)
+                .content(content)
                 .grp(grp)
                 .lft(lft)
                 .rgt(rgt)
                 .level(level)
-                .content("답글")
                 .build();
 
 

@@ -6,7 +6,7 @@
     <th:block th:include="/commons/fragments :: commons_head"></th:block>
     <title>글보기</title>
 </head>
-<body>
+<body th:with="user=${session.user == null ? '익명':session.user}">
   <th:block th:replace="/commons/fragments :: commons_nav" />
 
   <div class="container content-div">
@@ -71,16 +71,8 @@
                         <div class="right">
                             <time th:datetime="${comment.regDate}" data-format="Y-m-d H:i:s" th:text="${#temporals.format(comment.regDate, 'yyyy-MM-dd HH:mm:ss')}"></time>
                             <span>
-                                <button class="replyCommentBtn btn btn-secondary"> Make reply form</button>
-                                <form action="/board/commentReply" method="post" class="comment-reply">
-                                    <input type="hidden" name="boardNo" th:value="${boardNo}">
-                                    <input type="hidden" name="writer" th:value="tempWriterAA">
-                                    <input type="hidden" name="grp" th:value="${comment.grp}">
-                                    <input type="hidden" name="lft" th:value="${comment.lft}">
-                                    <input type="hidden" name="rgt" th:value="${comment.rgt}">
-                                    <input type="hidden" name="level" th:value="${comment.level}">
-                                    <input type="submit" class="btn btn-outline-primary" value="답글" >
-                                </form>
+                                <button th:attr="onclick=|toggleReplyCommentForm(replyComment${comment.no})|" class="replyCommentBtn btn btn-secondary">답글</button>
+
                             </span>
                         </div>
                     </div>
@@ -93,11 +85,39 @@
                         <div class="text" th:text="${comment.content}"><pre></pre></div>
                     </div>
                 </div>
+
+                <!-- 답글 start -->
+                <form action="/board/commentReply" method="post" class="comment-reply">
+                    <input type="hidden" name="boardNo" th:value="${boardNo}">
+                    <input type="hidden" name="writer" th:value="${name}">
+                    <input type="hidden" name="grp" th:value="${comment.grp}">
+                    <input type="hidden" name="lft" th:value="${comment.lft}">
+                    <input type="hidden" name="rgt" th:value="${comment.rgt}">
+                    <input type="hidden" name="level" th:value="${comment.level}">
+
+                    <div th:id="replyComment + ${comment.no}" class="comment-item mt-3 replyCommentForm" >
+                        <div class="content border border-info" th:style="${comment.level + 1 > 1} ? 'margin-left:'+ ${comment.level + 1}*30+'px'">
+                            <div class="info-row d-flex">
+                                <div class=" mr-auto" th:text="${user}"></div>
+                            </div>
+                            <div class="message">
+                                <div class="input-block d-flex">
+                                    <div class="input flex-grow-1">
+                                    <textarea class="form-control" name="content"
+                                              onkeyup="if (!window.__cfRLUnblockHandlers) return false; resize(this)"
+                                              maxlength="8000" placeholder="내용 입력" required=""></textarea>
+                                    </div>
+                                    <button type="submit" id="commentReplyFormButton" class="btn btn-lg btn-outline-info">작성</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- 답글 end -->
+
             </div>
             <!-- 댓글 제작중 end-->
-            <!-- 댓글 답글 start -->
 
-            <!-- 댓글 답글 end -->
         </div>
 
         <!-- 댓글 끝 -->
@@ -112,7 +132,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">@</span>
                         </div>
-                        <input type="text" name="writer" class="form-control form-control-sm" value="tempWriter" readonly>
+                        <input type="text" name="writer" class="form-control form-control-sm" th:value="${user}" readonly>
                     </div>
                 </div>
             </div>

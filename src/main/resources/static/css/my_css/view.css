@@ -69,3 +69,7 @@ img{
 .comment-reply{
     display:inline;
 }
+
+.replyCommentForm{
+    display: none;
+}

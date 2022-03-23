@@ -98,10 +98,10 @@ public class BoardController {
     public String creatCommentReply(
             @RequestParam long boardNo, @RequestParam String writer,
             @RequestParam long grp,   @RequestParam int lft,
-            @RequestParam int rgt,    @RequestParam int level){
+            @RequestParam int rgt,    @RequestParam int level, @RequestParam String content){
         log.info("BoardController: createCommentReply");
         boolean result = boardService.createCommentReply(
-                boardNo,writer, grp, lft, rgt, level);
+                boardNo, writer, content, grp, lft, rgt, level);
 
         return "redirect:/board/"+boardNo;
     }
