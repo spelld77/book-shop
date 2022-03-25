@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,38 @@ public class BoardController {
         return "/board_templates/view";
     }
 
+    // 게시글 삭제
+    @PostMapping("/{boardNo}/delete")
+    public String deleteBoard(@PathVariable long boardNo, @RequestParam String writer,
+                              HttpSession session){
+
+        log.info("BoardController: deleteBoard");
+        // 글 작성자가 아닐때
+//        if(!writer.equals(session.getAttribute("user"))){
+//            return "redirect:/board";
+//        }
+
+        boardService.deleteBoard(boardNo);
+        return "redirect:/board";
+    }
+
+    @GetMapping("/{boardNo}/edit")
+    public String editBoardForm(@PathVariable String boardNo){
+
+        return null;
+    }
+
+    // 게시글 수정
+    @PostMapping("/{boardNo}/edit")
+    public String editBoard(@PathVariable String boardNo){
+
+        log.info("BoardController: deleteBoard");
+        boardService.editBoard(boardNo);
+
+
+        return "redirect:/board";
+    }
+
     //루트 댓글 작성
     @PostMapping("/{boardNo}/comment")
     public String createComment(@PathVariable long boardNo, @RequestParam String writer,
@@ -105,5 +138,7 @@ public class BoardController {
 
         return "redirect:/board/"+boardNo;
     }
+
+
 
 }

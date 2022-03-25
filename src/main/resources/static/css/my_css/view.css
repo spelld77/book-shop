@@ -73,3 +73,7 @@ img{
 .replyCommentForm{
     display: none;
 }
+
+#board-edit{
+    text-align: right;
+}

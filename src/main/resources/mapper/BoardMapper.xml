@@ -136,4 +136,21 @@
                 )
     </insert>
 
+
+    <delete id="deleteBoard" parameterType="long">
+        delete from user_board where no = #{boardNo};
+    </delete>
+
+    <delete id="deleteAllComment" parameterType="long">
+        delete from comment where board = #{boardNo}
+    </delete>
+
+    <select id="selectAllFiles" parameterType="long" resultType="string">
+        select file_name from archive where board_no = #{boardNo};
+    </select>
+
+    <delete id="deleteAllFileNames" parameterType="long">
+        delete from archive where board_no = #{boardNo}
+    </delete>
+
 </mapper>

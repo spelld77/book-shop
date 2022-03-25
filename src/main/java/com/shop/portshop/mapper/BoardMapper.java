@@ -28,4 +28,9 @@ public interface BoardMapper {
     void updateIncreaseCommentRgt(@Param("commentVO") CommentVO commentVO, @Param("lastChildRgt") int lastChildRgt);
 
     boolean insertNewChildComment(@Param("commentVO") CommentVO commentVO, @Param("lastChildRgt") int lastChildRgt);
+
+    int deleteBoard(long boardNo);
+    int deleteAllComment(long boardNo);
+    List<String> selectAllFiles(long boardNo);
+    int deleteAllFileNames(long boardNo);
 }

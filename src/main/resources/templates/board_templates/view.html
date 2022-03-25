@@ -11,6 +11,19 @@
 
   <div class="container content-div">
 
+      <!-- 게시글 수정,삭제 버튼 start-->
+      <div class="edit-menu" id="board-edit">
+          <form method="post">
+              <input type="hidden" name = "writer" th:value="${board.writer}" />
+              <button th:formaction="@{/board/{boardNo}/delete(boardNo=${board.no})}" class="btn">삭제</button>
+              <button th:formaction="@{/board/{boardNo}/edit(boardNo=${board.no})}" th:method="get" class="btn">수정</button>
+          </form>
+
+      </div>
+
+
+      <!-- 게시글 수정,삭제 버튼 end-->
+      <!-- 본문 -->
     <div class="title-row">
         <h3 th:text="${board.title}">제목</h3>
     </div>
@@ -49,22 +62,8 @@
 
 <!-- 댓글 시작 -->
         <div class="comment-wrapper">
-            <div class="comment-item">
-                <div class="content border border-info">
-                    <div class="info-row d-flex">
-                        <div class=" mr-auto">기원초풍</div>
-                        <div class="right">
-                            <time datetime="2022-03-18T10:53:26.000Z" data-format="Y-m-d H:i:s">2022-03-18 19:53:26</time>
-                        </div>
-                    </div>
-                    <div class="message">
-                        <div class="text"><pre>링크만 주면 구동테스트 함</pre></div>
-<!--                        <div class="btn btn-sm btn-more">펼쳐보기▼</div>-->
-                    </div>
-                </div>
-            </div>
             <!-- 댓글 제작중 start-->
-            <div class="comment-item mt-3" th:each="comment : ${comments}">
+            <div class="comment-item mt-3" th:if="${comments}" th:each="comment : ${comments}">
                 <div class="content border border-info" th:style="${comment.level > 1} ? 'margin-left:'+ ${comment.level}*30+'px'">
                     <div class="info-row d-flex">
                         <div class=" mr-auto" th:text="${comment.writer}"></div>

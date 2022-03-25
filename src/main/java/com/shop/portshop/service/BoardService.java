@@ -8,10 +8,15 @@ import com.shop.portshop.vo.BoardVO;
 import com.shop.portshop.vo.CommentVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +24,9 @@ import java.util.Map;
 @Slf4j
 @Service
 public class BoardService {
+
+    @Value("${spring.servlet.multipart.location}")
+    String archivePath; // 이미지 저장 폴더
 
     private BoardMapper boardMapper;
     private StorageService storageService;
@@ -46,9 +54,6 @@ public class BoardService {
         boardVO.setContent(content);
         boardMapper.insertOneBoard(boardVO);
 
-        log.info("boardNo: " + boardVO.getNo());
-        log.debug("file length: " + files.length);
-
         // 파일 업로드 (있을때)
         if(files[0].getOriginalFilename().length() > 0){
             long boardNo = boardVO.getNo();
@@ -63,8 +68,6 @@ public class BoardService {
 
     public Map<String, Object> viewOneBoard(long boardNo) {
         boardMapper.increaseViews(boardNo);
-//        BoardVO board = boardMapper.selectOneBoard(boardNo);
-//        return board;
 
         Map<String, Object> resultInfo = new HashMap<>();
         BoardVO board = boardMapper.selectOneBoard(boardNo);
@@ -116,5 +119,28 @@ public class BoardService {
         boardMapper.insertNewChildComment(commentVO, lastChildRgt);
 
         return true;
+    }
+
+    @Transactional
+    public void deleteBoard(long boardNo) {
+
+        //파일 삭제
+        List<String> fileNames = boardMapper.selectAllFiles(boardNo);
+        for(String fileName : fileNames){
+           try{
+               Files.delete(Path.of(archivePath,"/",fileName));
+           } catch (IOException e){
+               log.error("file delete failed", e);
+           }
+
+        }
+        int deletedBoardNum = boardMapper.deleteBoard(boardNo);
+        int deletedCommentNum = boardMapper.deleteAllComment(boardNo);
+        int deletedFilesNum = boardMapper.deleteAllFileNames(boardNo);
+
+    }
+
+    public void editBoard(String boardNo) {
+
     }
 }
