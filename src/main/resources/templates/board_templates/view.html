@@ -12,11 +12,11 @@
   <div class="container content-div">
 
       <!-- 게시글 수정,삭제 버튼 start-->
-      <div class="edit-menu" id="board-edit">
-          <form method="post">
+      <div class="edit-menu" id="board-edit" th:if="${user} == ${board.writer}">
+          <form>
               <input type="hidden" name = "writer" th:value="${board.writer}" />
-              <button th:formaction="@{/board/{boardNo}/delete(boardNo=${board.no})}" class="btn">삭제</button>
-              <button th:formaction="@{/board/{boardNo}/edit(boardNo=${board.no})}" th:method="get" class="btn">수정</button>
+              <button th:formaction="@{/board/{boardNo}/delete(boardNo=${board.no})}" method="post" class="btn">삭제</button>
+              <button th:formaction="@{/board/{boardNo}/edit(boardNo=${board.no}, nowPage=${nowPage})}" method="get" class="btn">수정</button>
           </form>
 
       </div>
@@ -63,7 +63,7 @@
 <!-- 댓글 시작 -->
         <div class="comment-wrapper">
             <!-- 댓글 제작중 start-->
-            <div class="comment-item mt-3" th:if="${comments}" th:each="comment : ${comments}">
+            <div class="comment-item mt-3" th:if="${comments !=null}" th:each="comment : ${comments}">
                 <div class="content border border-info" th:style="${comment.level > 1} ? 'margin-left:'+ ${comment.level}*30+'px'">
                     <div class="info-row d-flex">
                         <div class=" mr-auto" th:text="${comment.writer}"></div>
@@ -88,7 +88,7 @@
                 <!-- 답글 start -->
                 <form action="/board/commentReply" method="post" class="comment-reply">
                     <input type="hidden" name="boardNo" th:value="${boardNo}">
-                    <input type="hidden" name="writer" th:value="${name}">
+                    <input type="hidden" name="writer" th:value="${user}">
                     <input type="hidden" name="grp" th:value="${comment.grp}">
                     <input type="hidden" name="lft" th:value="${comment.lft}">
                     <input type="hidden" name="rgt" th:value="${comment.rgt}">
@@ -144,7 +144,8 @@
                                   maxlength="8000" placeholder="내용 입력" required=""></textarea>
                     </div>
                 </div>
-                <div class="mt-1 d-flex justify-content-end">
+                <div class="mt-1 d-flex">
+                    <button type="button" id="prevButton" onclick="movePrevious()" class="mr-auto btn btn-lg btn-outline-secondary">이전</button>
                     <button type="submit" id="commentFormButton" class="btn btn-lg btn-outline-info">작성</button>
                 </div>
             </div>

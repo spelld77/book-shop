@@ -64,7 +64,9 @@ public class BoardController {
     }
 
     @GetMapping("/{boardNo}")
-    public String viewOneBoard(@PathVariable("boardNo") long boardNo, Model model){
+    public String viewOneBoard(
+            @RequestParam String nowPage,
+            @PathVariable("boardNo") long boardNo, Model model){
 
         Map<String, Object> obj = boardService.viewOneBoard(boardNo);
 
@@ -75,6 +77,7 @@ public class BoardController {
         if(board == null){
             return "redirect:/board";
         }
+        model.addAttribute("nowPage", nowPage);
         model.addAttribute("boardNo", boardNo);
         model.addAttribute("board", board);
         model.addAttribute("comments", comments);
@@ -98,19 +101,25 @@ public class BoardController {
         return "redirect:/board";
     }
 
+    //게시글 수정 페이지
     @GetMapping("/{boardNo}/edit")
-    public String editBoardForm(@PathVariable String boardNo){
+    public String editBoardForm(
+            @PathVariable long boardNo, Model model){
+        log.info("BoardController: editBoardForm");
 
-        return null;
+        boardService.getEditBoardForm(boardNo);
+        BoardVO board = boardService.getEditBoardForm(boardNo);
+        model.addAttribute("board", board);
+        return "/board_templates/edit";
     }
 
     // 게시글 수정
     @PostMapping("/{boardNo}/edit")
-    public String editBoard(@PathVariable String boardNo){
-
-        log.info("BoardController: deleteBoard");
-        boardService.editBoard(boardNo);
-
+    public String editBoard(
+            @PathVariable long boardNo,
+            @RequestParam String title, @RequestParam String content){
+        log.info("BoardController: editBoard");
+        boardService.editBoard(boardNo, title, content);
 
         return "redirect:/board";
     }

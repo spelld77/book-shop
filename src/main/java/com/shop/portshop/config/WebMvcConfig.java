@@ -32,7 +32,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         //로그인 정보 인터셉터
         registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/member/**");
+                .addPathPatterns("/member/**")
+                .addPathPatterns("/**/edit");
 
         //관리자 정보 인터셉터
         registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/admin/**")

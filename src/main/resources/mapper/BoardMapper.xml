@@ -153,4 +153,13 @@
         delete from archive where board_no = #{boardNo}
     </delete>
 
+    <update id="updateBoard">
+        update user_board
+        set title = #{title},
+            content = #{content},
+            update_date = current_timestamp
+        where no = #{boardNo};
+
+    </update>
+
 </mapper>

@@ -140,7 +140,16 @@ public class BoardService {
 
     }
 
-    public void editBoard(String boardNo) {
 
+    public BoardVO getEditBoardForm(long boardNo) {
+
+        return boardMapper.selectOneBoard(boardNo);
+    }
+
+    public boolean editBoard(long boardNo, String title, String content) {
+
+        boardMapper.updateBoard(boardNo, title, content);
+
+        return true;
     }
 }
