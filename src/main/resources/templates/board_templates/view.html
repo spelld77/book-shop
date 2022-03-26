@@ -15,8 +15,8 @@
       <div class="edit-menu" id="board-edit" th:if="${user} == ${board.writer}">
           <form>
               <input type="hidden" name = "writer" th:value="${board.writer}" />
-              <button th:formaction="@{/board/{boardNo}/delete(boardNo=${board.no})}" method="post" class="btn">삭제</button>
-              <button th:formaction="@{/board/{boardNo}/edit(boardNo=${board.no}, nowPage=${nowPage})}" method="get" class="btn">수정</button>
+              <button th:formaction="@{/board/{boardNo}/delete(boardNo=${board.no})}" formmethod="post" class="btn">삭제</button>
+              <button th:formaction="@{/board/{boardNo}/edit(boardNo=${board.no}, nowPage=${nowPage})}" formmethod="get" class="btn">수정</button>
           </form>
 
       </div>

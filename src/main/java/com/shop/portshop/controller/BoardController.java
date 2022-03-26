@@ -55,17 +55,22 @@ public class BoardController {
 
     @PostMapping("/write")
     public String writeBoardPage(
+            HttpSession session,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam(value = "files") MultipartFile[] files){
 
-        boolean result = boardService.addBoard(title, content, files);
+        String writer = (String) session.getAttribute("user");
+        if(writer == null){
+            writer = "익명";
+        }
+        boolean result = boardService.addBoard(writer, title, content, files);
         return "redirect:/board";
     }
 
+    //게시글 보기
     @GetMapping("/{boardNo}")
     public String viewOneBoard(
-            @RequestParam String nowPage,
             @PathVariable("boardNo") long boardNo, Model model){
 
         Map<String, Object> obj = boardService.viewOneBoard(boardNo);
@@ -77,7 +82,6 @@ public class BoardController {
         if(board == null){
             return "redirect:/board";
         }
-        model.addAttribute("nowPage", nowPage);
         model.addAttribute("boardNo", boardNo);
         model.addAttribute("board", board);
         model.addAttribute("comments", comments);
@@ -93,9 +97,9 @@ public class BoardController {
 
         log.info("BoardController: deleteBoard");
         // 글 작성자가 아닐때
-//        if(!writer.equals(session.getAttribute("user"))){
-//            return "redirect:/board";
-//        }
+        if(!writer.equals(String.valueOf(session.getAttribute("user")))){
+            return "redirect:/board";
+        }
 
         boardService.deleteBoard(boardNo);
         return "redirect:/board";

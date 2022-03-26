@@ -5,6 +5,6 @@ function toggleReplyCommentForm(contentId) {
 }
 
 function movePrevious(){
-    // history.go(-1);
     location.replace(document.referrer);
+    location.href="/board";
 }

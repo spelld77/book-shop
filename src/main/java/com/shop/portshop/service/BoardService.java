@@ -48,8 +48,9 @@ public class BoardService {
     }
 
 
-    public boolean addBoard(String title, String content, MultipartFile[] files) {
+    public boolean addBoard(String writer, String title, String content, MultipartFile[] files) {
         BoardVO boardVO = new BoardVO();
+        boardVO.setWriter(writer);
         boardVO.setTitle(title);
         boardVO.setContent(content);
         boardMapper.insertOneBoard(boardVO);
