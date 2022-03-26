@@ -29,7 +29,7 @@
         VALUES (
                    #{title},
                    #{content},
-                   'Temp Writer')
+                   #{writer})
 
     </insert>
 

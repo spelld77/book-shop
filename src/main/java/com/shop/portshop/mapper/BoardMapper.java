@@ -34,7 +34,5 @@ public interface BoardMapper {
     List<String> selectAllFiles(long boardNo);
     int deleteAllFileNames(long boardNo);
 
-    int updateBoard(@Param("boardNo") long boardNo,
-                    @Param("title") String title,
-                    @Param("content") String content);
+    int updateBoard(@Param("boardNo") long boardNo, @Param("title") String title, @Param("content") String content);
 }
