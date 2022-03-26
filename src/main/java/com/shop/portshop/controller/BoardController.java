@@ -68,9 +68,9 @@ public class BoardController {
         return "redirect:/board";
     }
 
+    //게시글 보기
     @GetMapping("/{boardNo}")
     public String viewOneBoard(
-            @RequestParam String nowPage,
             @PathVariable("boardNo") long boardNo, Model model){
 
         Map<String, Object> obj = boardService.viewOneBoard(boardNo);
@@ -82,7 +82,6 @@ public class BoardController {
         if(board == null){
             return "redirect:/board";
         }
-        model.addAttribute("nowPage", nowPage);
         model.addAttribute("boardNo", boardNo);
         model.addAttribute("board", board);
         model.addAttribute("comments", comments);
