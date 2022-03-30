@@ -20,7 +20,7 @@ public class Pagination {
         this.totalRecords = totalRecords;
         this.recordSize = recordPerPage;
         this.pageSize = visiblePageSize;
-        this.totalPages = totalRecords / recordSize + 1;
+        this.totalPages = (int) Math.ceil((double)totalRecords / recordSize);
         setNowPage(inputNowPage);
 
         this.startRecord = (nowPage - 1) * recordSize + 1;
