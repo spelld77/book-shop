@@ -36,14 +36,8 @@
 
       </tbody>
     </table>
-    <!--글작성 버튼-->
-    <div class="add_board_div float-right"> <!-- 임시-->
-<!--    <div th:if="${session.user}" class="add_board_div float-right">-->
-      <a href="/board/write" class="genric-btn primary">글작성</a>
-    </div>
-    <!--pagination wrapper end -->
 
-<!--  </div>-->
+    <!-- 페이지네이션 -->
     <nav aria-label="Page" class="pagination-wrapper">
       <ul class="pagination">
         <li th:if="${pageInfo.prevPage}" class="page-item"><a class="page-link" th:href="@{/board(page=${pageInfo.nowPage - 1})}">Prev</a></li>
@@ -55,8 +49,30 @@
         <li th:if="${pageInfo.nextPage}" class="page-item"><a class="page-link" th:href="@{/board(page=${pageInfo.nowPage + 1})}">Next</a></li>
       </ul>
     </nav>
-  </div>
 
+
+
+    <!-- 검색 -->
+    <form method="post" action="/board/search">
+    <div class="input-group d-flex">
+      <div class="input-group-prepend">
+        <select class="form-control form-control-sm w-50" name="target">
+          <option value="all">전체</option>
+          <option value="title">제목</option>
+          <option value="content">내용</option>
+          <option value="writer">글쓴이</option>
+        </select>
+        <input type="text" class="form-control form-control-sm " name="keyword" value="">
+      </div>
+      <div>
+        <button class="btn btn-info btn-sm" type="submit">검색</button>
+      </div>
+      <div class="ml-auto">
+        <a href="/board/write" class="genric-btn primary">글작성</a>
+      </div>
+
+  </div>
+  </form>
 
 
   <footer th:replace="/commons/fragments :: commons_footer"></footer>

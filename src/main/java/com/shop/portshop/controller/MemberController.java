@@ -81,6 +81,10 @@ public class MemberController{
 //        String userId = (String) session.getAttribute("user");
         String userId = (null == principal) ? "" : principal.getName();
 
+        if(userId == null){
+            return "redirect:/login";
+        }
+
         MemberVO member = memberService.getMember(userId);
         log.debug(member.toString());
         model.addAttribute("member", member);

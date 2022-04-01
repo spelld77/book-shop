@@ -162,4 +162,30 @@
 
     </update>
 
+    <select id="selectBoardBySearch" resultType="BoardVO">
+
+        SELECT
+            *
+        FROM
+            user_board
+        WHERE
+        <choose>
+            <when test="target == 'all'">
+                title LIKE CONCAT('%', #{keyword}, '%') OR
+                writer LIKE CONCAT('%', #{keyword}, '%') OR
+                content LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="target == 'title'">
+                title LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="target == 'writer'">
+                writer LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="target == 'content'">
+                content LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+        </choose>
+    </select>
+
+
 </mapper>

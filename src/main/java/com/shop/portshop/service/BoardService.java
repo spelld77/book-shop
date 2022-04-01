@@ -153,4 +153,12 @@ public class BoardService {
 
         return true;
     }
+
+    // 게시판 검색 기능
+    public List<BoardVO> searchBoard(String target, String keyword) {
+
+        List<BoardVO> boardList = boardMapper.selectBoardBySearch(target, keyword);
+
+        return boardList;
+    }
 }

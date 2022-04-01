@@ -35,4 +35,6 @@ public interface BoardMapper {
     int deleteAllFileNames(long boardNo);
 
     int updateBoard(@Param("boardNo") long boardNo, @Param("title") String title, @Param("content") String content);
+
+    List<BoardVO> selectBoardBySearch(@Param("target") String target, @Param("keyword") String keyword);
 }
