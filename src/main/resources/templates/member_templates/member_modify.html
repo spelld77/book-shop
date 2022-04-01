@@ -105,7 +105,7 @@
         <div class="login_part_form">
           <div class="login_part_form_iner">
             <h3>Port Shop 회원정보 수정</h3>
-            <form class="row contact_form" action="/member/modify" method="post" th:object="${member}" novalidate="novalidate">
+            <form class="row contact_form" th:action="@{/member/modify}" method="post" th:object="${member}" novalidate="novalidate">
 
               <div class="col-md-12 form-group p_star">
                 <div>아이디</div>

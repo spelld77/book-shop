@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link href="/css/my_css/view.css" rel="stylesheet">
     <th:block th:include="/commons/fragments :: commons_head"></th:block>
     <title>글보기</title>
@@ -12,22 +14,22 @@
   <div class="container content-div">
 
       <!-- 게시글 수정,삭제 버튼 start-->
-      <div class="edit-menu" id="board-edit" th:if="${(user == board.writer) && (board.writer != '익명')}">
-          <form>
+      <div class="edit-menu d-flex flex-row-reverse" id="board-edit" th:if="${(user == board.writer) && (board.writer != '익명')}">
+          <form th:action="@{/board/{boardNo}/delete(boardNo=${board.no})}" method="post">
               <input type="hidden" name = "writer" th:value="${board.writer}" />
-              <button th:formaction="@{/board/{boardNo}/delete(boardNo=${board.no})}" formmethod="post" class="btn">삭제</button>
-              <button th:formaction="@{/board/{boardNo}/edit(boardNo=${board.no}, nowPage=${nowPage})}" formmethod="get" class="btn">수정</button>
+              <button class="btn">삭제</button>
           </form>
-
+          <form th:action="@{/board/{boardNo}/edit(boardNo=${board.no})}" method="get">
+              <input type="hidden" name = "writer" th:value="${board.writer}" />
+              <button class="btn">수정</button>
+          </form>
       </div>
 
-
-      <!-- 게시글 수정,삭제 버튼 end-->
       <!-- 본문 -->
-    <div class="title-row">
-        <h3 th:text="${board.title}">제목</h3>
-    </div>
-    <div class="info-row d-flex">
+      <div class="title-row">
+          <h3 th:text="${board.title}">제목</h3>
+      </div>
+      <div class="info-row d-flex">
       <div class="board-explain w-25">
           <span>작성자</span>
           <span class="" th:text="${board.writer}">작성자</span>
@@ -86,7 +88,7 @@
                 </div>
 
                 <!-- 답글 start -->
-                <form action="/board/commentReply" method="post" class="comment-reply">
+                <form th:action="@{/board/commentReply}" method="post" class="comment-reply">
                     <input type="hidden" name="boardNo" th:value="${boardNo}">
                     <input type="hidden" name="writer" th:value="${user}">
                     <input type="hidden" name="grp" th:value="${comment.grp}">
@@ -154,12 +156,6 @@
 
 
   </div>
-
-
-
-
-
-
 
 
 

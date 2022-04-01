@@ -10,7 +10,8 @@
   <th:block th:replace="/commons/fragments :: commons_nav" />
 
   <div class="container content-div">
-    <form action="write" method="post" enctype="multipart/form-data">
+    <form th:action="@{/board/write}" method="post" enctype="multipart/form-data">
+
       <div class="form-row form-title">
         <span>제목</span>
         <div>
