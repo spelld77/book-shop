@@ -23,12 +23,21 @@ public class Pagination {
         this.totalPages = (int) Math.ceil((double)totalRecords / recordSize);
         setNowPage(inputNowPage);
 
-        this.startRecord = (nowPage - 1) * recordSize + 1;
 
-        this.startPage = setStartPage();
-        this.endPage = setEndPage();
-        this.prevPage = setPrevPage();
-        this.nextPage = setNextPage();
+        if(totalRecords <= 0){
+            this.startRecord = 0;
+            this.startPage = 0;
+            this.endPage = 0;
+            this.prevPage = false;
+            this.nextPage = false;
+
+        } else {
+            this.startRecord = (nowPage - 1) * recordSize + 1;
+            this.startPage = setStartPage();
+            this.endPage = setEndPage();
+            this.prevPage = setPrevPage();
+            this.nextPage = setNextPage();
+        }
     }
 
     public int setStartPage() {

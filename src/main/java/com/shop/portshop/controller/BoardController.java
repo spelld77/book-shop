@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,13 +35,27 @@ public class BoardController {
     @GetMapping
     public String displayBoard(
             @RequestParam(name = "page", defaultValue = "1") int nowPage,
+            @RequestParam(defaultValue = "") String target,
+            @RequestParam(defaultValue = "") String keyword,
             Model model){
 
-        int allBoardCount = boardService.getAllBoardCount();
-        pagination = new Pagination(allBoardCount, nowPage, 10, 5);
+        int allBoardCount = 0;
+        List<BoardVO> boardList = null;
+        // 검색 할 경우
+        if(!keyword.equals("")){
+            List<Object> searchResult = boardService.searchBoard(target, keyword, nowPage);
+            boardList = (ArrayList) searchResult.get(0);
+            pagination = (Pagination) searchResult.get(1);
 
-        List<BoardVO> boardList = boardService.getBoardList(pagination);
+        // 검색 안할때
+        } else{
+            allBoardCount = boardService.getAllBoardCount();
+            pagination = new Pagination(allBoardCount, nowPage, 10, 5);
+            boardList = boardService.getBoardList(pagination);
+        }
 
+        model.addAttribute("target", target);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("boardList",boardList);
         model.addAttribute("pageInfo", pagination);
         return "/board_templates/board";
@@ -152,12 +167,12 @@ public class BoardController {
     //게시판 검색
     @PostMapping("/search")
     public String searchBoard(@RequestParam String target, @RequestParam String keyword, Model model){
-        log.info("searchBoard");
-        List<BoardVO> boardList = boardService.searchBoard(target, keyword);
-
-        int allBoardCount = (null == boardList) ? 0 : boardList.size();
-        //-----------------nowPage is test
-        pagination = new Pagination(allBoardCount, 1, 10, 5);
+//        log.info("searchBoard");
+//        List<BoardVO> boardList = boardService.searchBoard(target, keyword);
+//
+//        int allBoardCount = (null == boardList) ? 0 : boardList.size();
+//        //-----------------nowPage is test
+//        pagination = new Pagination(allBoardCount, 1, 10, 5);
 
         //참고용 start
 //        int allBoardCount = boardService.getAllBoardCount();

@@ -38,41 +38,43 @@
     </table>
 
     <!-- 페이지네이션 -->
-    <nav aria-label="Page" class="pagination-wrapper">
+    <nav aria-label="Page" class="pagination-wrapper" th:if="${pageInfo.totalPages > 0}">
       <ul class="pagination">
-        <li th:if="${pageInfo.prevPage}" class="page-item"><a class="page-link" th:href="@{/board(page=${pageInfo.nowPage - 1})}">Prev</a></li>
+        <li th:if="${pageInfo.prevPage}" class="page-item"><a class="page-link" th:href="@{/board(page=${pageInfo.nowPage - 1}, target=${target}, keyword=${keyword})}">Prev</a></li>
 
         <li th:each="num : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}" class="page-item" th:classappend="${pageInfo.nowPage==num} ? active">
-          <a class="page-link" th:href="@{/board(page=${numStat.current})}" th:text="${numStat.current}"></a>
+          <a class="page-link" th:href="@{/board(page=${numStat.current}, target=${target}, keyword=${keyword})}" th:text="${numStat.current}"></a>
         </li>
 
-        <li th:if="${pageInfo.nextPage}" class="page-item"><a class="page-link" th:href="@{/board(page=${pageInfo.nowPage + 1})}">Next</a></li>
+        <li th:if="${pageInfo.nextPage}" class="page-item"><a class="page-link" th:href="@{/board(page=${pageInfo.nowPage + 1}, target=${target}, keyword=${keyword})}">Next</a></li>
       </ul>
     </nav>
 
 
 
     <!-- 검색 -->
-    <form method="post" action="/board/search">
-    <div class="input-group d-flex">
-      <div class="input-group-prepend">
-        <select class="form-control form-control-sm w-50" name="target">
-          <option value="all">전체</option>
-          <option value="title">제목</option>
-          <option value="content">내용</option>
-          <option value="writer">글쓴이</option>
-        </select>
-        <input type="text" class="form-control form-control-sm " name="keyword" value="">
+    <div class="d-flex">
+      <form method="get" th:action="@{/board(page=${pageInfo.nowPage - 1})}">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <select class="form-control form-control-sm w-50" name="target">
+            <option value="all" th:selected="${target == 'all'}">전체</option>
+            <option value="title" th:selected="${target == 'title'}">제목</option>
+            <option value="content" th:selected="${target == 'content'}">내용</option>
+            <option value="writer" th:selected="${target == 'writer'}">글쓴이</option>
+          </select>
+          <input type="text" class="form-control form-control-sm " name="keyword" th:value="${keyword}">
+        </div>
+        <div>
+          <button class="btn btn-info btn-sm" type="submit">검색</button>
+        </div>
       </div>
-      <div>
-        <button class="btn btn-info btn-sm" type="submit">검색</button>
-      </div>
-      <div class="ml-auto">
-        <a href="/board/write" class="genric-btn primary">글작성</a>
-      </div>
+      </form>
+        <div class="ml-auto">
+          <a href="/board/write" class="genric-btn primary">글작성</a>
+        </div>
+    </div>
 
-  </div>
-  </form>
 
 
   <footer th:replace="/commons/fragments :: commons_footer"></footer>

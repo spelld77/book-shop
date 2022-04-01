@@ -17,9 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -155,10 +153,33 @@ public class BoardService {
     }
 
     // 게시판 검색 기능
-    public List<BoardVO> searchBoard(String target, String keyword) {
+    public List<Object> searchBoard(String target, String keyword, int nowPage) {
 
-        List<BoardVO> boardList = boardMapper.selectBoardBySearch(target, keyword);
+        List<Object> obj = new ArrayList<>();
 
-        return boardList;
+        // 검색한 전체 게시물
+        List<BoardVO> tempList = boardMapper.selectBoardBySearch(target, keyword);
+
+        int allBoardCount = 0;
+        List<BoardVO> boardList = null;
+        boardList = new ArrayList<>();
+
+        if(null != tempList){
+            allBoardCount = tempList.size(); //글의 전체 갯수
+        }
+
+        // 게시물 수를 페이지 수 맞게 나누어 저장
+        for(int i = (nowPage - 1) * 10, maxNum = nowPage * 10; i < maxNum; i++){
+            if(allBoardCount <= i){
+                break;
+            }
+            boardList.add(tempList.get(i));
+        }
+
+        Pagination pagination = new Pagination(allBoardCount, nowPage, 10, 5);
+        obj.add(boardList);
+        obj.add(pagination);
+
+        return obj;
     }
 }
