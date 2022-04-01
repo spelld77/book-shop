@@ -2,11 +2,15 @@ package com.shop.portshop.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Date;
+import java.util.*;
 
 @Getter @Setter
-public class MemberVO {
+public class MemberVO implements UserDetails {
     private String id;
     private String pw;
     private String name;
@@ -39,5 +43,48 @@ public class MemberVO {
                 ", regDate=" + regDate +
                 ", grade=" + grade +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String auth = "";
+
+        if(grade == 0){
+            auth = "ADMIN";
+        } else{
+            auth = "USER";
+        }
+        return Collections.singleton(new SimpleGrantedAuthority(auth));
+
+    }
+
+    @Override
+    public String getPassword() {
+        return this.pw;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.id;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

@@ -9,11 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.security.Principal;
+
 @Slf4j
 @Controller
-public class MemberController {
+public class MemberController{
 
     private MemberService memberService;
 
@@ -34,33 +34,33 @@ public class MemberController {
         return "/member_templates/login";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestParam String id, @RequestParam String pw, @RequestParam(required = false) boolean remember_id,
-                        HttpSession session, HttpServletResponse response, Model model){
+//    @PostMapping("/login")
+//    public String login(@RequestParam String id, @RequestParam String pw, @RequestParam(required = false) boolean remember_id,
+//                        HttpSession session, HttpServletResponse response, Model model){
+//
+//        boolean loginSuccess = memberService.login(id,pw);
+//
+//        if(!loginSuccess){
+//            return "redirect:/login";
+//        }
+//        // 로그인 세션, 쿠키 설정
+//        session.setAttribute("user", id);
+//        if(remember_id){
+//            Cookie rememberIdCookie = new Cookie("rememberIdCookie", id);
+//            rememberIdCookie.setPath("/login");
+//            rememberIdCookie.setMaxAge(60 * 60 * 24 * 30);
+//            response.addCookie(rememberIdCookie);
+//
+//        }
 
-        boolean loginSuccess = memberService.login(id,pw);
 
-        if(!loginSuccess){
-            return "redirect:/login";
-        }
-        // 로그인 세션, 쿠키 설정
-        session.setAttribute("user", id);
-        if(remember_id){
-            Cookie rememberIdCookie = new Cookie("rememberIdCookie", id);
-            rememberIdCookie.setPath("/login");
-            rememberIdCookie.setMaxAge(60 * 60 * 24 * 30);
-            response.addCookie(rememberIdCookie);
-
-        }
-
-
-        return "redirect:/";
-    }
-    @PostMapping("/logout")
-    public String logout(HttpSession session){
-        session.removeAttribute("user");
-        return "redirect:/";
-    }
+//        return "redirect:/";
+//    }
+//    @PostMapping("/logout")
+//    public String logout(HttpSession session){
+//        session.removeAttribute("user");
+//        return "redirect:/";
+//    }
 
     @GetMapping("/join")
     public String moveJoinPage(){
@@ -69,14 +69,18 @@ public class MemberController {
 
     @PostMapping("/join")
     public String joinMember(@ModelAttribute MemberVO member){
+
         boolean result = memberService.addMember(member);
 
         return "/member_templates/login";
     }
 
     @GetMapping("/member/modify")
-    public String modifyMemberPage( Model model, HttpSession session){
-        String userId = (String) session.getAttribute("user");
+//    public String modifyMemberPage( Model model, HttpSession session){
+    public String modifyMemberPage( Model model, Principal principal){
+//        String userId = (String) session.getAttribute("user");
+        String userId = (null == principal) ? "" : principal.getName();
+
         MemberVO member = memberService.getMember(userId);
         log.debug(member.toString());
         model.addAttribute("member", member);
@@ -98,4 +102,5 @@ public class MemberController {
         }
         return "duplicated";
     }
+
 }

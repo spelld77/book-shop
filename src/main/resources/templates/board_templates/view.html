@@ -6,13 +6,13 @@
     <th:block th:include="/commons/fragments :: commons_head"></th:block>
     <title>글보기</title>
 </head>
-<body th:with="user=${session.user == null ? '익명':session.user}">
+<body th:with="user=${#authentication.getPrincipal() == 'anonymousUser' ? '익명': #authentication.getName()}">
   <th:block th:replace="/commons/fragments :: commons_nav" />
 
   <div class="container content-div">
 
       <!-- 게시글 수정,삭제 버튼 start-->
-      <div class="edit-menu" id="board-edit" th:if="${user} == ${board.writer}">
+      <div class="edit-menu" id="board-edit" th:if="${(user == board.writer) && (board.writer != '익명')}">
           <form>
               <input type="hidden" name = "writer" th:value="${board.writer}" />
               <button th:formaction="@{/board/{boardNo}/delete(boardNo=${board.no})}" formmethod="post" class="btn">삭제</button>

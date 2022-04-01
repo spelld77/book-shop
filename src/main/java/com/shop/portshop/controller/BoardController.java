@@ -12,11 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
-import java.util.Arrays;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -55,15 +53,12 @@ public class BoardController {
 
     @PostMapping("/write")
     public String writeBoardPage(
-            HttpSession session,
+            Principal principal,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam(value = "files") MultipartFile[] files){
 
-        String writer = (String) session.getAttribute("user");
-        if(writer == null){
-            writer = "익명";
-        }
+        String writer = (null == principal) ? "익명" : principal.getName();
         boolean result = boardService.addBoard(writer, title, content, files);
         return "redirect:/board";
     }
@@ -92,15 +87,17 @@ public class BoardController {
 
     // 게시글 삭제
     @PostMapping("/{boardNo}/delete")
-    public String deleteBoard(@PathVariable long boardNo, @RequestParam String writer,
-                              HttpSession session){
+    public String deleteBoard(@PathVariable long boardNo,
+                              @RequestParam String writer,
+                              Principal principal){
 
-        log.info("BoardController: deleteBoard");
+
+        log.info("deleteBoard");
+
         // 글 작성자가 아닐때
-        if(!writer.equals(String.valueOf(session.getAttribute("user")))){
+        if( null == principal || !writer.equals(principal.getName())){
             return "redirect:/board";
         }
-
         boardService.deleteBoard(boardNo);
         return "redirect:/board";
     }

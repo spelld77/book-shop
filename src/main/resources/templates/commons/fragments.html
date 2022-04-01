@@ -45,49 +45,15 @@
                 <a class="nav-link" href="/index">Home</a>
               </li>
 
-<!--              <li class="nav-item dropdown">-->
-<!--                <a class="nav-link dropdown-toggle" href="blog" id="navbarDropdown_1"-->
-<!--                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                  Shop-->
-<!--                </a>-->
-<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">-->
-<!--                  <a class="dropdown-item" href="category"> shop category</a>-->
-<!--                  <a class="dropdown-item" href="single-product">product details</a>-->
-
-<!--                </div>-->
-<!--              </li>-->
               <li class="nav-item">
                 <a class="nav-link" href="/shop">Shop</a>
               </li>
 
-<!--              <li class="nav-item dropdown">-->
-<!--                <a class="nav-link dropdown-toggle" href="blog" id="navbarDropdown_3"-->
-<!--                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                  pages-->
-<!--                </a>-->
-<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">-->
-<!--                  <a class="dropdown-item" href="login"> login</a>-->
-<!--                  <a class="dropdown-item" href="tracking">tracking</a>-->
-<!--                  <a class="dropdown-item" href="checkout">product checkout</a>-->
-<!--                  <a class="dropdown-item" href="cart">shopping cart</a>-->
-<!--                  <a class="dropdown-item" href="confirmation">confirmation</a>-->
-<!--                  <a class="dropdown-item" href="elements">elements</a>-->
-<!--                </div>-->
-<!--              </li>-->
               <li class="nav-item">
                 <a class="nav-link" href="/pages">Pages</a>
               </li>
 
-<!--              <li class="nav-item dropdown">-->
-<!--                <a class="nav-link dropdown-toggle" href="blog" id="navbarDropdown_2"-->
-<!--                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                  blog-->
-<!--                </a>-->
-<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">-->
-<!--                  <a class="dropdown-item" href="blog"> blog</a>-->
-<!--                  <a class="dropdown-item" href="single-blog">Single blog</a>-->
-<!--                </div>-->
-<!--              </li>-->
+
 
               <li class="nav-item">
                 <a class="nav-link" href="contact">Contact</a>
@@ -95,11 +61,12 @@
               <li class="nav-item">
                 <a class="nav-link" href="/board">게시판</a>
               </li>
-              <!-- 로그인, 로그아웃 버튼 -->
-              <li class="nav-item" th:if="${session.user == null}">
+
+              <li class="nav-item" th:if="${#authentication.getPrincipal() == 'anonymousUser'}">
                 <a class="nav-link" href="/login">로그인</a>
               </li>
-              <li class="nav-item" th:if="${session.user != null}">
+
+              <li class="nav-item" th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
                 <form action="/logout" method="post" id="logout_form">
                   <a class="nav-link" href="#" onclick="document.getElementById('logout_form').submit()">로그아웃</a>
                 </form>
