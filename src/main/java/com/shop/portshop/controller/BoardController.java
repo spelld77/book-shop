@@ -164,32 +164,5 @@ public class BoardController {
         return "redirect:/board/"+boardNo;
     }
 
-    //게시판 검색
-    @PostMapping("/search")
-    public String searchBoard(@RequestParam String target, @RequestParam String keyword, Model model){
-//        log.info("searchBoard");
-//        List<BoardVO> boardList = boardService.searchBoard(target, keyword);
-//
-//        int allBoardCount = (null == boardList) ? 0 : boardList.size();
-//        //-----------------nowPage is test
-//        pagination = new Pagination(allBoardCount, 1, 10, 5);
-
-        //참고용 start
-//        int allBoardCount = boardService.getAllBoardCount();
-//        pagination = new Pagination(allBoardCount, nowPage, 10, 5);
-//
-//        List<BoardVO> boardList = boardService.getBoardList(pagination);
-//
-//        model.addAttribute("boardList",boardList);
-//        model.addAttribute("pageInfo", pagination);
-//        return "/board_templates/board";
-        //참고 end
-
-
-
-        return "redirect:/board";
-    }
-
-
 
 }
