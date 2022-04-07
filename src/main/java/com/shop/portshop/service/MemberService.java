@@ -81,4 +81,16 @@ public class MemberService implements UserDetailsService {
 
         return user;
     }
+
+    //네이버로 가입
+    public boolean addMemberOfNaver(String id, String name, String email){
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String pw = passwordEncoder.encode(email);
+
+        MemberVO member = new MemberVO(id, pw, name, email, "","");
+        passwordEncoder = null;
+
+        return memberMapper.addMemberToDB(member);
+    }
 }
