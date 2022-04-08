@@ -1,32 +1,19 @@
 package com.shop.portshop.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.shop.portshop.oauth2.NaverLoginBO;
 import com.shop.portshop.service.MemberService;
 import com.shop.portshop.vo.MemberVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -36,8 +23,6 @@ public class MemberController{
 
     private final MemberService memberService;
     private final NaverLoginBO naverLoginBO;
-    private final AuthenticationManager authenticationManager;
-
 
     @GetMapping("/login")
     public String moveLoginPage(
