@@ -32,12 +32,15 @@ public class NaverLoginBO {
 
     private String state = "oAuth_state";
 
+    //랜덤 state 생성기
     public String generateState() {
         SecureRandom random = new SecureRandom();
         return new BigInteger(130, random).toString(32);
     }
+
     // 네이버 인증 url생성
     public String getAuthorizationUrl(HttpSession session){
+
         state = generateState();
         session.setAttribute("state", state);
 
@@ -45,20 +48,22 @@ public class NaverLoginBO {
                 .apiSecret(clientSecret)
                 .callback(redirectUri)
                 .build(NaverLoginApi.getInstance());
+
         return oAuth20Service.createAuthorizationUrlBuilder().state(state).build();
 
     }
 
     //네이버 콜백, 액세스 토큰 처리
     public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws IOException, ExecutionException, InterruptedException {
+
         //세션에 저장된 state값과 콜백으로 전달받은 값이 같은지 확인
         String sessionState = (String) session.getAttribute("state");
-
         if(sessionState.equals(state)){
             OAuth20Service oAuth20Service = new ServiceBuilder(clientId)
                     .apiSecret(clientSecret)
                     .callback(redirectUri)
                     .build(NaverLoginApi.getInstance());
+
             OAuth2AccessToken accessToken = oAuth20Service.getAccessToken(code);
             return accessToken;
         }
@@ -67,6 +72,7 @@ public class NaverLoginBO {
 
     // 네이버 사용자 프로필 API를 호출
     public String getUserProfile(OAuth2AccessToken oAuth2AccessToken) throws IOException, ExecutionException, InterruptedException{
+
         OAuth20Service oAuth20Service = new ServiceBuilder(clientId)
                 .apiSecret(clientSecret)
                 .callback(redirectUri).build(NaverLoginApi.getInstance());

@@ -1,14 +1,25 @@
 package com.shop.portshop.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shop.portshop.mapper.MemberMapper;
 import com.shop.portshop.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class MemberService implements UserDetailsService {
@@ -82,15 +93,32 @@ public class MemberService implements UserDetailsService {
         return user;
     }
 
-    //네이버로 가입
     public boolean addMemberOfNaver(String id, String name, String email){
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String pw = passwordEncoder.encode(email);
-
-        MemberVO member = new MemberVO(id, pw, name, email, "","");
-        passwordEncoder = null;
-
+        MemberVO member = new MemberVO(id, null, name, email, "","");
         return memberMapper.addMemberToDB(member);
+    }
+
+    // 네이버 처리 로직
+    public void processNaverLogin(String userProfile) throws JsonProcessingException {
+
+        Map<String, Object> map = new ObjectMapper().readValue(userProfile, HashMap.class);
+        HashMap<String, String> response = (LinkedHashMap<String, String>) map.get("response");
+
+        String id = response.get("id");
+        String name = response.get("name");
+        String email = response.get("email");
+
+        //id없으면 회원가입
+        MemberVO member = getMember(id);
+        if(member == null){
+            addMemberOfNaver(id, name, email);
+            member = getMember(id);
+        }
+
+        //manual login
+        Authentication authentication = new UsernamePasswordAuthenticationToken(id, null, AuthorityUtils.createAuthorityList("USER"));
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
     }
 }
