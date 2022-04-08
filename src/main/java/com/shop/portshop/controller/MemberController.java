@@ -1,8 +1,11 @@
 package com.shop.portshop.controller;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.shop.portshop.commons.MailHandler;
 import com.shop.portshop.oauth2.NaverLoginBO;
+import com.shop.portshop.service.MailService;
 import com.shop.portshop.service.MemberService;
+import com.shop.portshop.vo.MailDto;
 import com.shop.portshop.vo.MemberVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,7 @@ public class MemberController{
 
     private final MemberService memberService;
     private final NaverLoginBO naverLoginBO;
+    private final MailService mailService;
 
     @GetMapping("/login")
     public String moveLoginPage(
@@ -96,6 +100,38 @@ public class MemberController{
         OAuth2AccessToken accessToken = naverLoginBO.getAccessToken(session, code, state);
         String userProfile = naverLoginBO.getUserProfile(accessToken);
         memberService.processNaverLogin(userProfile);
+        return "redirect:/";
+    }
+
+    @GetMapping("/lostPass")
+    public String forgetPasswordPage(){
+        return "/member_templates/member_forget";
+    }
+
+    // 비밀번호 재설정
+    @PostMapping("/forgetPassword")
+    public String processForgetPassword(@RequestParam(defaultValue = "") String id){
+        // find member
+        MemberVO member = memberService.getMember(id);
+        if(member == null){
+            return"redirect:/";
+        }
+
+        // get email
+        String findEmail = member.getEmail();
+
+        MailDto mailDto = new MailDto();
+        mailDto.setAddress(findEmail);
+        mailDto.setTitle("PortShop 패스워드 변경 안내");
+        String message = "<h2>안녕하세요. PortShop입니다.</h2>" +
+                "<p>다음페이지에서 비밀번호를 변경하세요<br>" +
+                "비밀번호 변경 주소" +
+                "<br>감사합니다.";
+        mailDto.setMessage(message);
+
+        // send email
+        boolean result = mailService.sendEmailForChangingPassword(mailDto);
+
         return "redirect:/";
     }
 

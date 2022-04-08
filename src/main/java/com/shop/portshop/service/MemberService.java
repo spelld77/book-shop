@@ -2,6 +2,7 @@ package com.shop.portshop.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shop.portshop.commons.MailHandler;
 import com.shop.portshop.mapper.MemberMapper;
 import com.shop.portshop.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.websocket.MessageHandler;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -121,4 +124,5 @@ public class MemberService implements UserDetailsService {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
     }
+
 }
