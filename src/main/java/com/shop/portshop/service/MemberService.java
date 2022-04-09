@@ -23,6 +23,7 @@ import javax.websocket.MessageHandler;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class MemberService implements UserDetailsService {
@@ -125,4 +126,24 @@ public class MemberService implements UserDetailsService {
         securityContext.setAuthentication(authentication);
     }
 
+    // 리셋토큰 설정
+    public String changeAndGetResetToken(String id) {
+
+        String token = UUID.randomUUID().toString();
+
+        //리셋토큰 update
+        int result = memberMapper.updateResetToken(id, token);
+
+        return token;
+
+    }
+
+    public int changePassword(String id, String purePwd) {
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodePwd = passwordEncoder.encode(purePwd);
+
+        return memberMapper.updatePassword(id, encodePwd);
+
+    }
 }

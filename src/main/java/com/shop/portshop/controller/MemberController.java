@@ -1,7 +1,6 @@
 package com.shop.portshop.controller;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.shop.portshop.commons.MailHandler;
 import com.shop.portshop.oauth2.NaverLoginBO;
 import com.shop.portshop.service.MailService;
 import com.shop.portshop.service.MemberService;
@@ -12,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
@@ -103,36 +103,78 @@ public class MemberController{
         return "redirect:/";
     }
 
+    // 비밀번호 재설정 요청 페이지
     @GetMapping("/lostPass")
     public String forgetPasswordPage(){
         return "/member_templates/member_forget";
     }
 
-    // 비밀번호 재설정
+    // 비밀번호 재설정 요청 제출
     @PostMapping("/forgetPassword")
     public String processForgetPassword(@RequestParam(defaultValue = "") String id){
         // find member
         MemberVO member = memberService.getMember(id);
-        if(member == null){
-            return"redirect:/";
+        // 등록된 이메일로 비밀번호 재설정 보내기
+        if(member != null){
+
+            // reset token 설정
+            String resetToken = memberService.changeAndGetResetToken(id);
+
+            //리셋토큰 url만들기----------------------------
+            String url = "http://localhost:8080/resetPassword?id=" + id + "&token=" + resetToken;
+
+            // get email
+            String findEmail = member.getEmail();
+
+            MailDto mailDto = new MailDto();
+            mailDto.setAddress(findEmail);
+            mailDto.setTitle("PortShop 패스워드 변경 안내");
+            String message = "<h2>안녕하세요. PortShop입니다.</h2>" +
+                    "<p>다음페이지에서 비밀번호를 변경하세요<br>" +
+                    "<a href=" + url +"> 비밀번호 변경 페이지로 이동</a>" +
+                    "<br>감사합니다.";
+            mailDto.setMessage(message);
+
+            // send email
+            boolean result = mailService.sendEmailForChangingPassword(mailDto);
         }
-
-        // get email
-        String findEmail = member.getEmail();
-
-        MailDto mailDto = new MailDto();
-        mailDto.setAddress(findEmail);
-        mailDto.setTitle("PortShop 패스워드 변경 안내");
-        String message = "<h2>안녕하세요. PortShop입니다.</h2>" +
-                "<p>다음페이지에서 비밀번호를 변경하세요<br>" +
-                "비밀번호 변경 주소" +
-                "<br>감사합니다.";
-        mailDto.setMessage(message);
-
-        // send email
-        boolean result = mailService.sendEmailForChangingPassword(mailDto);
 
         return "redirect:/";
     }
+
+    @GetMapping("/resetPassword")
+    public String resetPaswordPage(@RequestParam String id, @RequestParam String token,
+                                   Model model){
+
+        //리셋토큰과 id 체크
+        MemberVO member = memberService.getMember(id);
+        String realToken = member.getResetToken();
+        if(!StringUtils.equals(token, realToken)){
+            return "redirect:/";
+        }
+
+        model.addAttribute("id", id);
+        model.addAttribute("token", token);
+
+        return "/member_templates/member_reset_password";
+    }
+
+    @PostMapping("/resetPassword")
+    public String resetPassword( @RequestParam String id, @RequestParam String token,
+                                 @RequestParam String pwd){
+
+        //리셋토큰과 id 체크
+        MemberVO member = memberService.getMember(id);
+        String realToken = member.getResetToken();
+
+        // 비밀번호 변경
+        if(StringUtils.equals(token, realToken)){
+            int result = memberService.changePassword(id, pwd);
+        }
+
+        return "redirect:/";
+    }
+
+
 
 }

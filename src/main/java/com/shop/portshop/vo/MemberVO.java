@@ -19,6 +19,7 @@ public class MemberVO implements UserDetails {
     private String address;
     private Date regDate;
     private int grade;
+    private String resetToken;
 
     public MemberVO(){}
 
@@ -29,20 +30,6 @@ public class MemberVO implements UserDetails {
         this.email = email;
         this.tel = tel;
         this.address = address;
-    }
-
-    @Override
-    public String toString() {
-        return "MemberVO{" +
-                "id='" + id + '\'' +
-                ", pw='" + pw + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", tel='" + tel + '\'' +
-                ", address='" + address + '\'' +
-                ", regDate=" + regDate +
-                ", grade=" + grade +
-                '}';
     }
 
     @Override

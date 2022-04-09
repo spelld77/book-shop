@@ -38,5 +38,17 @@
         SELECT pw FROM member WHERE id = #{id}
     </select>
 
+    <update id="updateResetToken">
+        UPDATE member
+        SET resettoken = #{token}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE member
+        SET pw = #{pwd}, resettoken = NULL
+        WHERE id = #{id}
+    </update>
+
 
 </mapper>
