@@ -1,9 +1,14 @@
 // 아이디 중복 체크
 function duplicateCheck(){
 
-    let idField = document.getElementById('mId');
+    let idField = document.getElementById('id');
     let modalIdField = document.getElementById('input_id');
 
+    if(modalIdField.value.length > 30 || modalIdField.value.trim() == ''){
+        console.log('modal value: ' + modalIdField.value.length);
+        alert("30자 이내로 입력해주세요");
+        return;
+    }
 
     $.ajax({
         url: "/checkUniqueId",
@@ -26,4 +31,13 @@ function duplicateCheck(){
         }
     });
 
+}
+
+function checkForm(){
+
+    if(idVal == ''){
+        alert("ID 중복체크를 해주세요");
+        return false;
+    }
+    return true;
 }
