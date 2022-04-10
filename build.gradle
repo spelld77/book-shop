@@ -34,9 +34,10 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
 	implementation 'com.github.scribejava:scribejava-apis:8.3.1'
-
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+	implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
 }
 
 test {

@@ -1,0 +1,26 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <th:block th:include="/commons/fragments :: commons_head"></th:block>
+  <title>Astronomy Picture of the Day</title>
+</head>
+
+<body>
+
+<th:block th:replace="/commons/fragments :: commons_nav" />
+
+<div class="container padding_top text-center">
+  <img class="w-75" th:src="${info['url']}">
+  <div>
+    <div class="h5" th:text="${info['title'] + '('  +info['date'] + ')'}"></div>
+    <div th:text="${info['explanation']}"></div>
+  </div>
+</div>
+
+<footer th:replace="/commons/fragments :: commons_footer"></footer>
+<th:block th:include="/commons/fragments :: commons_jquery_pluginis"></th:block>
+
+</body>
+
+</html>
