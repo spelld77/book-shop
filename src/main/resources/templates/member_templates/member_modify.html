@@ -137,8 +137,10 @@
                 <input type="text" class="form-control" id="mAddress" name="address" th:field="*{address}"
                        placeholder="주소">
               </div>
-
-                <button type="submit" value="submit" class="btn_3">
+                <button type="button" onclick="history.back()"  class="btn btn-secondary mr-2">
+                  취소
+                </button>
+                <button type="submit" value="submit" class="btn btn-danger">
                   회원 정보 수정
                 </button>
             </form>

@@ -50,7 +50,7 @@
       </div>
     </div>
 
-<!-- 내용-->
+    <!-- 내용-->
     <div class="article-info">
      <p th:text="${board.content}">내용</p>
 
@@ -61,10 +61,9 @@
 
 
     <div class="reply-info">
-
-<!-- 댓글 시작 -->
+        <!-- 댓글 -->
         <div class="comment-wrapper">
-            <!-- 댓글 제작중 start-->
+            <!-- 댓글 표시-->
             <div class="comment-item mt-3" th:if="${comments !=null}" th:each="comment : ${comments}">
                 <div class="content border border-info" th:style="${comment.level > 1} ? 'margin-left:'+ ${comment.level}*30+'px'">
                     <div class="info-row d-flex">
@@ -87,7 +86,7 @@
                     </div>
                 </div>
 
-                <!-- 답글 start -->
+                <!-- 답글 표시 -->
                 <form th:action="@{/board/commentReply}" method="post" class="comment-reply">
                     <input type="hidden" name="boardNo" th:value="${boardNo}">
                     <input type="hidden" name="writer" th:value="${user}">
@@ -114,15 +113,11 @@
                         </div>
                     </div>
                 </form>
-                <!-- 답글 end -->
 
             </div>
-            <!-- 댓글 제작중 end-->
+            <!-- 댓글 표시 end-->
 
         </div>
-
-        <!-- 댓글 끝 -->
-
 
         <!-- 댓글 작성 -->
         <form class="write-area" th:action="@{/board/{boardNo}/comment(boardNo=${boardNo})}" id="commentForm" method="post">
