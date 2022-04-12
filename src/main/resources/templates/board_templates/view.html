@@ -60,7 +60,7 @@
     </div>
 
 
-    <div class="reply-info">
+    <div class="reply-info" id="replies-root">
         <!-- 댓글 -->
         <div class="comment-wrapper">
             <!-- 댓글 표시-->
@@ -103,11 +103,9 @@
                             <div class="message">
                                 <div class="input-block d-flex">
                                     <div class="input flex-grow-1">
-                                    <textarea class="form-control" name="content"
-                                              onkeyup="if (!window.__cfRLUnblockHandlers) return false; resize(this)"
-                                              maxlength="8000" placeholder="내용 입력" required=""></textarea>
+                                    <textarea class="form-control" name="content" maxlength="8000" placeholder="내용 입력" required="required"></textarea>
                                     </div>
-                                    <button type="submit" id="commentReplyFormButton" class="btn btn-lg btn-outline-info">작성</button>
+                                    <button type="button" onclick="makeSubComment(this.form)" id="commentReplyFormButton" class="btn btn-lg btn-outline-info">작성</button>
                                 </div>
                             </div>
                         </div>
@@ -136,14 +134,12 @@
             <div class="input-wrapper mb-5">
                 <div class="input-block">
                     <div class="input">
-                        <textarea class="form-control" name="content"
-                                  onkeyup="if (!window.__cfRLUnblockHandlers) return false; resize(this)"
-                                  maxlength="8000" placeholder="내용 입력" required=""></textarea>
+                        <textarea class="form-control" name="content" maxlength="8000" placeholder="내용 입력" required></textarea>
                     </div>
                 </div>
                 <div class="mt-1 d-flex">
-                    <button type="button" id="prevButton" onclick="movePrevious()" class="mr-auto btn btn-lg btn-outline-secondary">이전</button>
-                    <button type="submit" id="commentFormButton" class="btn btn-lg btn-outline-info">작성</button>
+                    <button type="button" id="prevButton" onclick="history.back()" class="mr-auto btn btn-lg btn-outline-secondary">이전</button>
+                    <button type="button" onclick="makeRootComment()" id="commentFormButton" class="btn btn-lg btn-outline-info">작성</button>
                 </div>
             </div>
         </form>

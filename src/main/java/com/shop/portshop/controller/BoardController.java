@@ -142,26 +142,26 @@ public class BoardController {
 
     //루트 댓글 작성
     @PostMapping("/{boardNo}/comment")
+    @ResponseBody
     public String createComment(@PathVariable long boardNo, @RequestParam String writer,
                              @RequestParam String content){
-        log.info("BoardController: createComment");
         boolean result = boardService.createRootComment(boardNo, writer, content);
-        return "redirect:/board/"+boardNo;
+        return result ? "success" : "fail";
 
     }
 
     // 대댓글 작성
-//    @PostMapping("/{boardNo}/commentReply")
+    @ResponseBody
     @PostMapping("/commentReply")
     public String creatCommentReply(
             @RequestParam long boardNo, @RequestParam String writer,
             @RequestParam long grp,   @RequestParam int lft,
             @RequestParam int rgt,    @RequestParam int level, @RequestParam String content){
-        log.info("BoardController: createCommentReply");
+
         boolean result = boardService.createCommentReply(
                 boardNo, writer, content, grp, lft, rgt, level);
 
-        return "redirect:/board/"+boardNo;
+        return result ? "success" : "fail";
     }
 
 
