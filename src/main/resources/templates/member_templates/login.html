@@ -38,6 +38,9 @@
                                     <input type="password" class="form-control" id="pw" name="pw" value=""
                                         placeholder="비밀번호" required>
                                 </div>
+                                <div th:if="${loginFail}" class="ml-3 text-danger">
+                                    아이디와 암호를 확인해 주세요
+                                </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
                                         <input type="checkbox" id="f-option" name="remember_id" th:checked="${remember_id}">
@@ -61,10 +64,15 @@
     </section>
     <!--================login_part end =================-->
 
+    <input type="hidden" value="-1" id="stateTag" th:value="${state}">
+    <input type="hidden" value="" id="messageTag" th:value="${message}">
+
     <footer th:replace="/commons/fragments :: commons_footer"></footer>
     <th:block th:include="/commons/fragments :: commons_jquery_pluginis"></th:block>
 
-    <script src="/js/my_js/login.js"></script>
+    <script src="js/my_js/common_toastr.js"></script>
+
+
 
 </body>
 

@@ -76,10 +76,14 @@
       </div>
     </div>
 
+    <input type="hidden" value="" id="stateTag" th:value="${state}">
+    <input type="hidden" value="" id="messageTag" th:value="${message}">
 
+  </div>
 
   <footer th:replace="/commons/fragments :: commons_footer"></footer>
   <th:block th:include="/commons/fragments :: commons_jquery_pluginis"></th:block>
+  <script src="js/my_js/common_toastr.js"></script>
 
 </body>
 </html>

@@ -121,7 +121,7 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoard(long boardNo) {
+    public boolean deleteBoard(long boardNo) {
 
         //파일 삭제
         List<String> fileNames = boardMapper.selectAllFiles(boardNo);
@@ -136,6 +136,8 @@ public class BoardService {
         int deletedBoardNum = boardMapper.deleteBoard(boardNo);
         int deletedCommentNum = boardMapper.deleteAllComment(boardNo);
         int deletedFilesNum = boardMapper.deleteAllFileNames(boardNo);
+
+        return true;
 
     }
 

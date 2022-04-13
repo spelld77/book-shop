@@ -46,6 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .usernameParameter("id")
                 .passwordParameter("pw")
                 .successHandler(new LoginSuccessHandler())
+                .failureHandler(new LoginFailureHandler())
                 .permitAll()
             .and()
                 .logout()

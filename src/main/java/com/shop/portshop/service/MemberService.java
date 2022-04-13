@@ -138,12 +138,14 @@ public class MemberService implements UserDetailsService {
 
     }
 
-    public int changePassword(String id, String purePwd) {
+    public boolean changePassword(String id, String purePwd) {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodePwd = passwordEncoder.encode(purePwd);
 
-        return memberMapper.updatePassword(id, encodePwd);
+        int result = memberMapper.updatePassword(id, encodePwd);
+        return (result > 0) ? true : false;
+
 
     }
 }

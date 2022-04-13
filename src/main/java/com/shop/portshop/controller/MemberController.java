@@ -1,6 +1,7 @@
 package com.shop.portshop.controller;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.shop.portshop.constant.WorkState;
 import com.shop.portshop.oauth2.NaverLoginBO;
 import com.shop.portshop.service.MailService;
 import com.shop.portshop.service.MemberService;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.Cookie;
@@ -51,10 +53,17 @@ public class MemberController{
     }
 
     @PostMapping("/join")
-    public String joinMember(@ModelAttribute MemberVO member){
+    public String joinMember(@ModelAttribute MemberVO member, RedirectAttributes redirectAttributes){
+        boolean state = memberService.addMember(member);
 
-        boolean result = memberService.addMember(member);
-        return "/member_templates/login";
+        if(state){
+            redirectAttributes.addFlashAttribute("state", WorkState.SUCCESS);
+            redirectAttributes.addFlashAttribute("message", "회원가입이 완료되었습니다.");
+        } else{
+            redirectAttributes.addFlashAttribute("state", WorkState.FAILURE);
+            redirectAttributes.addFlashAttribute("message", "회원가입에 실패했습니다.");
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/member/modify")
@@ -71,8 +80,17 @@ public class MemberController{
     }
 
     @PostMapping("/member/modify")
-    public String modifyMember( @ModelAttribute("member") MemberVO member){
-        boolean result = memberService.modifyMember(member);
+    public String modifyMember( @ModelAttribute("member") MemberVO member, RedirectAttributes redirectAttributes){
+        boolean state = memberService.modifyMember(member);
+
+        if(state){
+            redirectAttributes.addFlashAttribute("state", WorkState.SUCCESS);
+            redirectAttributes.addFlashAttribute("message", "회원정보 변경에 성공했습니다");
+        } else{
+            redirectAttributes.addFlashAttribute("state", WorkState.FAILURE);
+            redirectAttributes.addFlashAttribute("message", "회원정보 변경에 실패했습니다.");
+        }
+
         return "redirect:/";
     }
 
@@ -111,7 +129,7 @@ public class MemberController{
 
     // 비밀번호 재설정 요청 제출
     @PostMapping("/forgetPassword")
-    public String processForgetPassword(@RequestParam(defaultValue = "") String id){
+    public String processForgetPassword(@RequestParam(defaultValue = "") String id, RedirectAttributes redirectAttributes){
         // find member
         MemberVO member = memberService.getMember(id);
         // 등록된 이메일로 비밀번호 재설정 보내기
@@ -136,7 +154,15 @@ public class MemberController{
             mailDto.setMessage(message);
 
             // send email
-            boolean result = mailService.sendEmailForChangingPassword(mailDto);
+            boolean state = mailService.sendEmailForChangingPassword(mailDto);
+
+            if(state){
+                redirectAttributes.addFlashAttribute("state", WorkState.SUCCESS);
+                redirectAttributes.addFlashAttribute("message", "메일을 전송했습니다. 메일을 확인해주세요");
+            } else{
+                redirectAttributes.addFlashAttribute("state", WorkState.FAILURE);
+                redirectAttributes.addFlashAttribute("message", "메일을 전송하지 못했습니다. 다시 시도해주세요");
+            }
         }
 
         return "redirect:/";
@@ -161,15 +187,27 @@ public class MemberController{
 
     @PostMapping("/resetPassword")
     public String resetPassword( @RequestParam String id, @RequestParam String token,
-                                 @RequestParam String pwd){
+                                 @RequestParam String pwd, RedirectAttributes redirectAttributes){
+
+
 
         //리셋토큰과 id 체크
         MemberVO member = memberService.getMember(id);
         String realToken = member.getResetToken();
 
+        boolean state = false;
+
         // 비밀번호 변경
         if(StringUtils.equals(token, realToken)){
-            int result = memberService.changePassword(id, pwd);
+            state = memberService.changePassword(id, pwd);
+        }
+
+        if(state){
+            redirectAttributes.addFlashAttribute("state", WorkState.SUCCESS);
+            redirectAttributes.addFlashAttribute("message", "비밀번호 변경에 성공했습니다");
+        } else{
+            redirectAttributes.addFlashAttribute("state", WorkState.FAILURE);
+            redirectAttributes.addFlashAttribute("message", "비밀번호 변경에 실패했습니다.");
         }
 
         return "redirect:/";

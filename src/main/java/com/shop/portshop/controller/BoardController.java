@@ -1,6 +1,7 @@
 package com.shop.portshop.controller;
 
 import com.shop.portshop.commons.Pagination;
+import com.shop.portshop.constant.WorkState;
 import com.shop.portshop.service.BoardService;
 import com.shop.portshop.vo.BoardVO;
 import com.shop.portshop.vo.CommentVO;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -71,10 +73,19 @@ public class BoardController {
             Principal principal,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
-            @RequestParam(value = "files") MultipartFile[] files){
+            @RequestParam(value = "files") MultipartFile[] files,
+            RedirectAttributes redirectAttributes){
 
         String writer = (null == principal) ? "익명" : principal.getName();
-        boolean result = boardService.addBoard(writer, title, content, files);
+        boolean state = boardService.addBoard(writer, title, content, files);
+
+        if(state){
+            redirectAttributes.addFlashAttribute("state",WorkState.SUCCESS);
+            redirectAttributes.addFlashAttribute("message", "게시글 작성에 성공했습니다");
+        } else{
+            redirectAttributes.addFlashAttribute("state",WorkState.FAILURE);
+            redirectAttributes.addFlashAttribute("message", "게시글 작성에 실패했습니다");
+        }
         return "redirect:/board";
     }
 
@@ -104,7 +115,8 @@ public class BoardController {
     @PostMapping("/{boardNo}/delete")
     public String deleteBoard(@PathVariable long boardNo,
                               @RequestParam String writer,
-                              Principal principal){
+                              Principal principal,
+                              RedirectAttributes redirectAttributes){
 
 
         log.info("deleteBoard");
@@ -113,7 +125,17 @@ public class BoardController {
         if( null == principal || !writer.equals(principal.getName())){
             return "redirect:/board";
         }
-        boardService.deleteBoard(boardNo);
+
+        boolean state= boardService.deleteBoard(boardNo);
+
+        if(state){
+            redirectAttributes.addFlashAttribute("state", WorkState.SUCCESS);
+            redirectAttributes.addFlashAttribute("message", "게시글 삭제에 성공했습니다");
+        } else{
+            redirectAttributes.addFlashAttribute("state", WorkState.FAILURE);
+            redirectAttributes.addFlashAttribute("message", "게시글 삭제에 실패했습니다");
+        }
+
         return "redirect:/board";
     }
 
@@ -133,9 +155,17 @@ public class BoardController {
     @PostMapping("/{boardNo}/edit")
     public String editBoard(
             @PathVariable long boardNo,
-            @RequestParam String title, @RequestParam String content){
-        log.info("BoardController: editBoard");
-        boardService.editBoard(boardNo, title, content);
+            @RequestParam String title, @RequestParam String content, RedirectAttributes redirectAttributes){
+
+        boolean state = boardService.editBoard(boardNo, title, content);
+
+        if(state){
+            redirectAttributes.addFlashAttribute("state", WorkState.SUCCESS);
+            redirectAttributes.addFlashAttribute("message", "게시글 수정에 성공했습니다");
+        } else{
+            redirectAttributes.addFlashAttribute("state", WorkState.FAILURE);
+            redirectAttributes.addFlashAttribute("message", "게시글 수정에 실패했습니다");
+        }
 
         return "redirect:/board";
     }
