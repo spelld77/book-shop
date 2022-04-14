@@ -1,1 +1,1 @@
-[데모영상](https://youtu.be/4UqWDo6rgL8)
+[project demo](https://youtu.be/XDQ_xvXCHQY)
