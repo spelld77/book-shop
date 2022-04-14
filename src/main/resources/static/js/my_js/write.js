@@ -9,6 +9,7 @@ function setPreviewImage(files){
     fileArr.forEach( file => {
         const reader = new FileReader();
         let divTag = document.createElement("div");
+        divTag.classList.add("mt-3");
         let imgTag = document.createElement("img");
         imgTag.classList.add("preview-img");
         divTag.appendChild(imgTag);

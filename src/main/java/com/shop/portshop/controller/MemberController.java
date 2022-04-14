@@ -146,8 +146,8 @@ public class MemberController{
 
             MailDto mailDto = new MailDto();
             mailDto.setAddress(findEmail);
-            mailDto.setTitle("PortShop 패스워드 변경 안내");
-            String message = "<h2>안녕하세요. PortShop입니다.</h2>" +
+            mailDto.setTitle("bookInside 비밀번호 변경 안내");
+            String message = "<h2>안녕하세요. bookInside입니다.</h2>" +
                     "<p>다음페이지에서 비밀번호를 변경하세요<br>" +
                     "<a href=" + url +"> 비밀번호 변경 페이지로 이동</a>" +
                     "<br>감사합니다.";
