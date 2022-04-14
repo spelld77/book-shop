@@ -11,7 +11,7 @@
 <th:block th:replace="/commons/fragments :: commons_nav" />
 
 <div class="container padding_top text-center">
-  <img class="w-75" th:src="${info['url']}">
+  <img class="img-fluid" th:src="${info['url']}">
   <div>
     <div class="h5" th:text="${info['title'] + '('  +info['date'] + ')'}"></div>
     <div th:text="${info['explanation']}"></div>
