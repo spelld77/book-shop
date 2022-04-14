@@ -29,14 +29,14 @@ public class MailService {
             // 받는 사람
             mailHandler.setTo(mailDto.getAddress());
             // 보내는 사람
-            mailHandler.setFrom(fromAddress, "PortShop");
+            mailHandler.setFrom(fromAddress, "bookInside");
             // 제목
             mailHandler.setSubject(mailDto.getTitle());
             // HTML Layout
             String htmlContent = "<p>" + mailDto.getMessage() +"<p> <img src='cid:sample-img'>";
             mailHandler.setText(htmlContent);
             // 이미지 삽입
-            mailHandler.setInline("sample-img", "static/img/logo.png");
+            mailHandler.setInline("sample-img", "static/img/logo3.png");
             //메일 보내기
             mailHandler.send();
 
