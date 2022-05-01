@@ -15,12 +15,9 @@
     </insert>
 
     <select id="selectBoardFileNames" parameterType="Long" resultType="String">
-
         SELECT file_name
-        FROM user_board
-        JOIN archive
-        ON user_board.no = archive.board_no
-        WHERE user_board.no = #{boardNo}
+        FROM archive
+        WHERE board_no = #{boardNo}
 
     </select>
 </mapper>
